@@ -1,0 +1,123 @@
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+export TERM=xterm
+
+export EDITOR=vim
+
+export HISTSIZE=10000
+export HISTTIMEFORMAT="%h %d %H:%M:%S "
+shopt -s histappend
+shopt -s cmdhist
+
+export PATH=$HOME/.my_local/bin:$PATH
+export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+export PATH="/usr/local/opt/openjdk/bin:$PATH"
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    export LDFLAGS="-L $(xcrun --show-sdk-path)/usr/lib -L brew --prefix bzip2/lib"
+    export CFLAGS="-L $(xcrun --show-sdk-path)/usr/include -L brew --prefix bzip2/include"
+fi
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+# help the linker find libraries (added because of tmux on Willerslev servers)
+export LD_LIBRARY_PATH=$HOME/.my_local/lib:$LD_LIBRARY_PATH
+export MANPATH=$HOME/.my_local/share/man:$MANPATH
+
+alias rm="rm -v"
+alias ls="ls --color=auto"
+alias ll="ls -l"
+alias lh="ls -lh"
+alias la="ll -a"
+alias ts="tmux new-session -A -s default"
+alias q="qstat | less -S"
+alias qm="qstat -u martin_petr | less -S"
+alias h="htop"
+alias hm="htop -u martin_petr"
+alias R='R --no-save --no-restore-history --no-save --no-restore-data'
+
+alias gs="git status"
+alias ga="git add"
+alias go="git checkout"
+alias gc="git commit"
+alias gcm="gc -m"
+alias gca="gc --amend"
+alias gd="git diff"
+alias gdc="gd --cached"
+alias gb="git branch"
+alias gp="git push"
+alias gf="git pull"
+alias gl="git log --oneline --decorate --graph"
+alias gll="git log"
+
+# "smart" viewer function
+function v() {
+    file="$1"
+    shift
+    rest="$*"
+
+    if [[ -d $file ]]; then
+        ls -l $file
+    elif [[ $file =~ ".vcf.gz" ]]; then
+        bcftools view $file $rest | less -S
+    elif [[ $file =~ ".gz" ]]; then
+        zless -S $file | less -S
+    elif [[ $file =~ ".bam" ]]; then
+        samtools view $file $rest | less -S
+    else
+        less -S $file
+    fi
+}
+
+# get current branch in git repo
+function parse_git_branch() {
+    BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+    if [ ! "${BRANCH}" == "" ]
+    then
+        STAT=`parse_git_dirty`
+        echo " [${BRANCH}${STAT}]"
+    else
+        echo ""
+    fi
+}
+
+# get current status of git repo
+function parse_git_dirty {
+    status=`git status 2>&1 | tee`
+    dirty=`echo -n "${status}" 2> /dev/null | grep "modified:" &> /dev/null; echo "$?"`
+    untracked=`echo -n "${status}" 2> /dev/null | grep "Untracked files" &> /dev/null; echo "$?"`
+    ahead=`echo -n "${status}" 2> /dev/null | grep "Your branch is ahead of" &> /dev/null; echo "$?"`
+    newfile=`echo -n "${status}" 2> /dev/null | grep "new file:" &> /dev/null; echo "$?"`
+    renamed=`echo -n "${status}" 2> /dev/null | grep "renamed:" &> /dev/null; echo "$?"`
+    deleted=`echo -n "${status}" 2> /dev/null | grep "deleted:" &> /dev/null; echo "$?"`
+    bits=''
+    if [ "${renamed}" == "0" ]; then
+        bits=">${bits}"
+    fi
+    if [ "${ahead}" == "0" ]; then
+        bits="*${bits}"
+    fi
+    if [ "${newfile}" == "0" ]; then
+        bits="+${bits}"
+    fi
+    if [ "${untracked}" == "0" ]; then
+        bits="?${bits}"
+    fi
+    if [ "${deleted}" == "0" ]; then
+        bits="x${bits}"
+    fi
+    if [ "${dirty}" == "0" ]; then
+        bits="!${bits}"
+    fi
+    if [ ! "${bits}" == "" ]; then
+        echo " ${bits}"
+    else
+        echo ""
+    fi
+}
+
+export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\] \n \\$ "
