@@ -1,3 +1,5 @@
+(setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/11:/usr/local/opt/libgccjit/lib/gcc/11:/usr/local/opt/gcc/lib/gcc/11/gcc/x86_64-apple-darwin20/11.1.0")
+
 (setq user-full-name "Martin Petr"
       user-mail-address "mp@bodkan.net")
 
@@ -34,6 +36,7 @@
 (use-package zoom-window
   :bind ("C-z" . zoom-window-zoom))
 
+(use-package solarized-theme)
 (use-package dracula-theme)
 
 (use-package windmove
@@ -405,9 +408,9 @@ there's no active region."
 
 (defun mp/toggle-theme ()
   (interactive)
-  (if (eq (car custom-enabled-themes) 'modus-operandi)
-      (enable-theme 'modus-vivendi)
-    (enable-theme 'modus-operandi)))
+  (if (eq (car custom-enabled-themes) 'solarized-dark)
+      (load-theme 'solarized-light t)
+    (load-theme 'solarized-dark t)))
 
 (setq explicit-shell-file-name "bash")
 
