@@ -14,6 +14,16 @@ export PATH=$HOME/.my_local/bin:$PATH
 export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 export PATH="/usr/local/opt/openjdk/bin:$PATH"
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    export LDFLAGS="-L $(xcrun --show-sdk-path)/usr/lib -L brew --prefix bzip2/lib"
+    export CFLAGS="-L $(xcrun --show-sdk-path)/usr/include -L brew --prefix bzip2/include"
+fi
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
 # help the linker find libraries (added because of tmux on Willerslev servers)
 export LD_LIBRARY_PATH=$HOME/.my_local/lib:$LD_LIBRARY_PATH
 export MANPATH=$HOME/.my_local/share/man:$MANPATH
@@ -111,4 +121,3 @@ function parse_git_dirty {
 }
 
 export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\] \n \\$ "
-
