@@ -1,5 +1,3 @@
-(setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/11:/usr/local/opt/libgccjit/lib/gcc/11:/usr/local/opt/gcc/lib/gcc/11/gcc/x86_64-apple-darwin20/11.1.0")
-
 (setq user-full-name "Martin Petr"
       user-mail-address "mp@bodkan.net")
 
@@ -192,17 +190,6 @@ exists somewhere upwards of the current file."
 (use-package diredfl
   :init
   (diredfl-global-mode))
-
-(use-package dumb-jump
-  :config
-  (setq dumb-jump-prefer-searcher 'rg)
-  :bind (("M-g o" . dumb-jump-go-other-window)
-         ("M-g j" . dumb-jump-go)
-         ("M-g b" . dumb-jump-back)
-         ("M-g i" . dumb-jump-go-prompt)
-         ("M-g q" . dumb-jump-quick-look)
-         ("M-g x" . dumb-jump-go-prefer-external)
-         ("M-g z" . dumb-jump-go-prefer-external-other-window)))
 
 (use-package magit
   :demand
@@ -417,16 +404,10 @@ there's no active region."
 (setq vc-handled-backends nil)
 (defalias 'perl-mode 'cperl-mode)
 
-;; use dumb-jump by default, ignoring ESS etc...
-(add-to-list 'xref-backend-functions #'dumb-jump-xref-activate)
-
 (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
 
 (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
-;; https://www.reddit.com/r/emacs/comments/dsfnwi/emacs_golf/
-;;(define-key global-map (kbd "C-z") nil)
-;;(define-key global-map (kbd "M-q") nil)
 (column-number-mode t)
 
 (setq custom-file "~/.emacs.d/emacs-custom")
@@ -437,6 +418,4 @@ there's no active region."
 
 (if (display-graphic-p)
     (progn (toggle-frame-maximized)
-           ;; (org-agenda nil "c")
-           ;; (delete-other-windows)
            (menu-bar-mode -1)))
