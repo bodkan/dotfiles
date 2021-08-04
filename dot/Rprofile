@@ -4,3 +4,5 @@ local({r <- getOption("repos")
        r["CRAN"] <- "https://cloud.r-project.org" 
        options(repos=r)
 })
+
+Sys.setenv("_R_CHECK_LENGTH_1_CONDITION_" = "true")
