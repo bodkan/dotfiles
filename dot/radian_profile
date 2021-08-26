@@ -1,0 +1,7 @@
+options(radian.highlight_matching_bracket = FALSE)
+options(radian.history_search_no_duplicates = TRUE)
+options(radian.history_search_ignore_case = TRUE)
+options(radian.escape_key_map = list(
+    list(key = "-", value = " <- "),
+    list(key = "m", value = " %>% ")
+))
