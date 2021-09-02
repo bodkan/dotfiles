@@ -1,10 +1,23 @@
 options(browserNLdisabled = TRUE)
 
-local({r <- getOption("repos")
-       r["CRAN"] <- "https://cloud.r-project.org" 
-       options(repos=r)
+local({
+  r <- getOption("repos")
+  r["CRAN"] <- "https://cloud.r-project.org" 
+  options(repos=r)
 })
 
 Sys.setenv("_R_CHECK_LENGTH_1_CONDITION_" = "true")
 
-options(vsc.plot = FALSE)
+#options(vsc.plot = FALSE)
+#options(vsc.plot = "Active")
+if (interactive() && Sys.getenv("RSTUDIO") == "") {
+  Sys.setenv(TERM_PROGRAM = "vscode")
+  options(vsc.plot = FALSE)
+  if ("httpgd" %in% .packages(all.available = TRUE)) {
+    options(device = function(...) {
+      httpgd::httpgd()
+      .vsc.browser(httpgd::httpgdURL(), viewer = "Beside")
+    })
+  }
+  source(file.path(Sys.getenv(if (.Platform$OS.type == "windows") "USERPROFILE" else "HOME"), ".vscode-R", "init.R"))
+}
