@@ -10,8 +10,8 @@ Sys.setenv("_R_CHECK_LENGTH_1_CONDITION_" = "true")
 
 if (interactive() && Sys.getenv("RSTUDIO") == "") {
   Sys.setenv(TERM_PROGRAM = "vscode")
-  options(vsc.plot = FALSE)
   if ("httpgd" %in% .packages(all.available = TRUE)) {
+    options(vsc.plot = FALSE)
     options(device = function(...) {
       httpgd::hgd(silent = TRUE)
       .vsc.browser(httpgd::hgd_url(history = FALSE), viewer = "Active")
