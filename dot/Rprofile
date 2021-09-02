@@ -7,16 +7,3 @@ local({r <- getOption("repos")
 
 Sys.setenv("_R_CHECK_LENGTH_1_CONDITION_" = "true")
 
-options(vsc.str.max.level = 2)
-
-if (interactive() && Sys.getenv("RSTUDIO") == "" && Sys.info()["sysname"] == "Darwin") {
-  Sys.setenv(TERM_PROGRAM = "vscode")
-  if ("httpgd" %in% .packages(all.available = TRUE)) {
-    options(vsc.plot = FALSE)
-    options(device = function(...) {
-      httpgd::hgd(silent = TRUE)
-      .vsc.browser(httpgd::hgd_url(history = FALSE), viewer = "Active")
-    })
-  }
-  source(file.path(Sys.getenv(if (.Platform$OS.type == "windows") "USERPROFILE" else "HOME"), ".vscode-R", "init.R"))
-}
