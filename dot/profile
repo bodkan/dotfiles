@@ -41,8 +41,6 @@ alias qm="qstat -u martin_petr | less -S"
 alias h="htop"
 alias hm="htop -u martin_petr"
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
-#alias r="$HOME/.pyenv/shims/radian"
-alias r="$HOME/.pyenv/versions/retipy/bin/radian"
 
 alias gs="git status"
 alias ga="git add"
