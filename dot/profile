@@ -39,7 +39,7 @@ alias ts="tmux new-session -A -s default"
 alias q="qstat | less -S"
 alias qm="qstat -u martin_petr | less -S"
 alias h="htop"
-alias hm="htop -u martin_petr"
+alias hm="htop -u krd114"
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
 
 alias gs="git status"
