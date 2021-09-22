@@ -12,5 +12,4 @@ mkdir ~/.my_local/R_LIBS
 
 echo "PATH=$PATH" > ~/.Renviron
 echo "R_LIBS_USER=~/.my_local/R_LIBS" >> ~/.Renviron
-echo "RETICULATE_PYTHON=~/.pyenv/versions/retipy/bin/python3" >> ~/.Renviron
-
+echo "R_BUILD_TAR=tar" >> ~/.Renviron
