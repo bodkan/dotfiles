@@ -8,11 +8,6 @@ local({
 
 Sys.setenv("_R_CHECK_LENGTH_1_CONDITION_" = "true")
 
-options(vsc.dev.args = list(width = 10, height = 8, units = "in", res = 300))
-
-#options(vsc.rstudioapi = TRUE)
-#options(defaultPackages = c(getOption("defaultPackages"), "rmdocs"))
-
 if (interactive() && Sys.getenv("RSTUDIO") == "") {
   Sys.setenv(TERM_PROGRAM = "vscode")
   if ("httpgd" %in% .packages(all.available = TRUE)) {
