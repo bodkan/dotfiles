@@ -41,6 +41,8 @@ alias qm="qstat -u martin_petr | less -S"
 alias h="htop"
 alias hm="htop -u krd114"
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
+alias mnt='sshfs krd114@r6:/maps/projects/racimolab/people/krd114/ $HOME/Cluster -ovolname=krd114'
+alias umnt='umount ~/Cluster'
 
 alias gs="git status"
 alias ga="git add"
