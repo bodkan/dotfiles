@@ -53,18 +53,24 @@ alias gf="git pull"
 alias gl="git log --oneline --decorate --graph"
 alias gll="git log"
 
-function snk() {
+function smk() {
     conda activate snakemake
     if [[ "$#" -eq 1 ]]; then
         snakemake --use-conda --cores 1 $1
     elif [[ "$#" -eq 2 ]]; then
         snakemake --use-conda --cores $1 $2
     elif [[ "$#" -gt 2 ]]; then
-        echo "Illegal number of arguments"
+        if [[ $1 =~ ^[1-9]+$ ]] ; then
+            num_cores=$1
+            shift
+        else
+            num_cores=1
+        fi
+        snakemake --use-conda --cores $num_cores $@
     fi
 }
 
-function snk-env() {
+function smk-env() {
     if [[ -z "$1" ]]; then
         echo "Missing conda environment name"
         echo "=============================="
@@ -89,9 +95,10 @@ function snk-env() {
         conda env create -f workflow/envs/${name}.yaml -n ${name}
     fi
     conda activate $name
+    MANPATH=$CONDA_PREFIX/share/man:$MANPATH
 }
 
-function snk-rm() {
+function smk-rm() {
     if [[ -z "$1" ]]; then
         echo "Missing conda environment name"
         return 1
@@ -127,6 +134,8 @@ function v() {
     if [[ -d $file ]]; then
         ls -l $file
     elif [[ $file =~ ".vcf.gz" ]]; then
+        bcftools view $file $rest | less -S
+    elif [[ $file =~ ".bcf" ]]; then
         bcftools view $file $rest | less -S
     elif [[ $file =~ ".gz" ]]; then
         zless -S $file | less -S
