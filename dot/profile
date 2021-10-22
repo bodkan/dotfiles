@@ -53,10 +53,10 @@ alias gf="git pull"
 alias gl="git log --oneline --decorate --graph"
 alias gll="git log"
 
-# One of several options:
-#   - either activate the snakemake environment
+# Do one of the following based on specified function arguments
+#   - activate the snakemake environment
 #   - run a single snakemake rule using one core
-#   - run one or more snakemake rules on a given number of cores
+#   - run a bunch of snakemake rules on a given number of cores
 function smk() {
     conda activate snakemake
     if [[ "$#" -eq 1 ]]; then
@@ -64,6 +64,9 @@ function smk() {
     elif [[ "$#" -ge 2 ]]; then
         if [[ $1 =~ ^[1-9]+$ ]] ; then
             num_cores=$1
+            shift
+        elif [[ $1 = "all" ]] ; then
+            num_cores="all"
             shift
         else
             num_cores=1
