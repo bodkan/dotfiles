@@ -62,7 +62,7 @@ function smk() {
     if [[ "$#" -eq 1 ]]; then
         snakemake --use-conda --cores 1 $1
     elif [[ "$#" -ge 2 ]]; then
-        if [[ $1 =~ ^[1-9]+$ ]] ; then
+        if [[ $1 =~ ^[0-9]+$ ]] ; then
             num_cores=$1
             shift
         elif [[ $1 = "all" ]] ; then
