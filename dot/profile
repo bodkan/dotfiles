@@ -25,7 +25,6 @@ fi
 export LD_LIBRARY_PATH=$HOME/.my_local/lib:$LD_LIBRARY_PATH
 export MANPATH=$HOME/.my_local/share/man:$MANPATH
 
-alias rm="rm -v"
 alias ls="ls --color=auto"
 alias ll="ls -l"
 alias lh="ls -lh"
@@ -78,7 +77,7 @@ function smk() {
 # Either activate a given snakemake conda environment X (creating it
 # first if necessary based on the contents of rules/envs/X.yaml) or
 # list the number of conda environments present on the system.
-function smk-env() {
+function smkenv() {
     if [[ -z "$1" ]]; then
         echo "Missing conda environment name"
         echo "=============================="
@@ -107,7 +106,7 @@ function smk-env() {
 }
 
 # Delete a snakemake conda environment.
-function smk-rm() {
+function smkrm() {
     if [[ -z "$1" ]]; then
         echo "Missing conda environment name"
         return 1
