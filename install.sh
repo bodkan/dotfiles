@@ -14,5 +14,9 @@ mkdir ~/.my_local/R_LIBS
 
 # generate ~/.Renviron file with necessary configs
 echo "PATH=$PATH" > ~/.Renviron
-echo "R_LIBS_USER=~/.my_local/R_LIBS" >> ~/.Renviron
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "R_LIBS_USER=~/.my_local/R_LIBS" >> ~/.Renviron
+else
+    echo "R_LIBS_USER=~/projects/.R_LIBS" >> ~/.Renviron
+fi
 echo "R_BUILD_TAR=tar" >> ~/.Renviron
