@@ -10,11 +10,11 @@ done
 
 mkdir ~/.my_local
 mkdir ~/.my_local/bin
-mkdir ~/.my_local/R_LIBS
 
 # generate ~/.Renviron file with necessary configs
 echo "PATH=$PATH" > ~/.Renviron
 if [[ "$OSTYPE" == "darwin"* ]]; then
+    mkdir ~/.my_local/R_LIBS
     echo "R_LIBS_USER=~/.my_local/R_LIBS" >> ~/.Renviron
 else
     echo "R_LIBS_USER=~/projects/.R_LIBS" >> ~/.Renviron
