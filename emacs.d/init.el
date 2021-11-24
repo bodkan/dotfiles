@@ -31,17 +31,15 @@
 ;; Install and configure required packages
 ;;
 
+(use-package dumb-jump)
+
 (use-package zoom-window
   :bind ("C-z" . zoom-window-zoom))
 
-(use-package solarized-theme)
-(use-package dracula-theme)
-
 (use-package windmove
   :config
-  ;; use command key on Mac
   ;; wrap around at edges
-  (setq windmove-wrap-around t)
+  (setq windmove-wrap-around nil)
   :bind
   ("M-h" . windmove-left)
   ("M-l" . windmove-right)
@@ -59,7 +57,8 @@
 
   ;; prefer richer, more heavy, annotations over the lighter default
   ;; variant (`marginalia-cycle' switches between the annotators)
-  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  (setq marginalia-annotators
+        '(marginalia-annotators-heavy marginalia-annotators-light nil))
         
   :bind (("M-A" . marginalia-cycle)
          :map minibuffer-local-map
@@ -74,8 +73,6 @@
   (add-hook 'isend-mode-hook 'isend-default-shell-setup)
   (add-hook 'isend-mode-hook 'isend-default-ipython-setup)
   (add-hook 'isend-mode-hook 'isend-default-julia-setup))
-
-(use-package f)
 
 (use-package projectile
   :ensure t
@@ -95,83 +92,26 @@
   :init
   (selectrum-mode +1)
   :config
-  (global-set-key (kbd "C-x C-z") #'selectrum-repeat)
   (setq selectrum-num-candidates-displayed 20))
-
-;; https://ddavis.io/posts/emacs-python-lsp/
-(use-package pyvenv
-  :init
-  (setenv "WORKON_HOME" "~/.pyenv/versions")
-  :config
-  (defun mp/pyvenv-autoload ()
-    "Automatically activate pyvenv version if .python-version
-exists somewhere upwards of the current file."
-  (f-traverse-upwards
-   (lambda (path)
-     (let ((python-version-path (f-expand ".python-version" path)))
-       (if (f-exists? python-version-path)
-           (progn
-             (pyvenv-workon
-              (replace-regexp-in-string "\n$" ""
-                                        (f-read-text python-version-path)))
-             t))))))
-  (add-hook 'python-mode-hook 'mp/pyvenv-autoload))
-
-(use-package elpy
-  :init
-  (elpy-enable)
-  :config
-  ;; use Jupyter console (from official docs)
-  (setq python-shell-interpreter "jupyter"
-        python-shell-interpreter-args "console --simple-prompt"
-      python-shell-prompt-detect-failure-warning nil)
-  (add-to-list 'python-shell-completion-native-disabled-interpreters
-               "jupyter")
-  ;; always use the current virtualenv
-  (setq elpy-rpc-virtualenv-path 'current)
-
-  (defun elpy-shell--use-interactive-plots-in-jupyter ()
-  "Automatically use interactive figures in Jupyter console
-  (otherwise it opens a png figure in the viewer - probably
-  because that's what Jupyter notebook needs) see here:
-  https://github.com/jorgenschaefer/elpy/issues/1769#issuecomment-607479044"
-  (when (not (null (string-match "jupyter" python-shell-interpreter)))
-    (let ((process (python-shell-get-process)))
-      (python-shell-send-string "%matplotlib")
-      process)))
-  (add-hook 'python-shell-first-prompt-hook 'elpy-shell--use-interactive-plots-in-jupyter t)
-;;  (setq python-shell-completion-native-enable nil)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (setq elpy-modules (delq 'elpy-module-yasnippet elpy-modules))
-  (setq elpy-modules (delq 'elpy-module-django elpy-modules)))
 
 ;; 1. brew install poppler automake
 ;; 2. run (pdf-tools-install) which downloads and installs
 ;; bunch of other things - note that this needs to be run with
 ;; each re-start of Emacs
-(use-package pdf-tools
- :if window-system
- :init
- (pdf-tools-install)
- ;; Prevent errors about `pdf-view-current-page` as being called by
- ;; some internal prefetching function not being a function but a
- ;; macro (which is true). I couldn't find a relevant fix or
- ;; discussion, so I'm disabling prefetching altogether.
- (add-hook 'pdf-tools-enabled-hook (lambda () (pdf-cache-prefetch-minor-mode -1)))
- :config
- (define-key pdf-view-mode-map [remap bury-buffer] #'kill-this-buffer)
- :bind
- (:map pdf-view-mode-map
-       ("k" . pdf-view-previous-line-or-previous-page)
-       ("j" . pdf-view-next-line-or-next-page)))
+;; (use-package pdf-tools
+;;  :if window-system
+;;  :init
+;;  (pdf-tools-install)
+;;  :bind
+;;  (:map pdf-view-mode-map
+;;        ("k" . pdf-view-previous-line-or-previous-page)
+;;        ("j" . pdf-view-next-line-or-next-page)))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
   :config
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "LANG"))
-
-(use-package htmlize)
 
 (use-package diminish)
 
@@ -208,21 +148,24 @@ exists somewhere upwards of the current file."
                         ("s-p" . vterm-toggle-forward))))
 
 (use-package ess
-;;  :load-path "~/projects/ESS/lisp"
   :init
   (require 'ess-site)
   :config
   ;; set location of R (useful for custom compiled R on a server and
   ;; another R on the local machine)
   (define-key inferior-ess-mode-map (kbd "C-c C-w") nil)
-  (setq inferior-ess-r-program "~/.my_local/bin/R")
   (setq inferior-R-args "--no-restore-history --no-save --no-restore-data"
         ess-use-flymake nil
         ess-eval-visibly nil
         ess-eval-empty t
         ess-history-file nil)
   :bind
-  ("C-M-;" . mp/insert-section))
+  ("C-M-;" . mp/ess-httpgd-open))
+
+(defun mp/ess-httpgd-open (&optional arg)
+  "Open browser window with the httpgd plot output"
+  (interactive)
+  (ess-eval-linewise "httpgd::hgd_browse()"))
 
 (defun mp/ess-pkgdown-build-site (&optional arg)
   "Interface for `devtools::document()'.
@@ -246,18 +189,8 @@ With prefix ARG ask for extra arguments."
 
 (defun mp/ess-settings ()
   (setq ess-indent-level 2)
-  (setq ess-style 'RStudio)
-  ;; do not use ESS for xref lookups
-  (add-to-list 'xref-backend-functions #'dumb-jump-xref-activate))
+  (setq ess-style 'RStudio))
 (add-hook 'ess-mode-hook 'mp/ess-settings)
-
-(use-package polymode
-  :ensure markdown-mode
-  :ensure poly-R
-  :ensure poly-noweb
-  :config
-  (setq polymode-exporter-output-file-format "%s") ;; get rid of *-exported.md
-  (setq polymode-weaver-output-file-format "%s")) ;; get rid of *-weaved.md
 
 (use-package avy
   :bind
@@ -282,13 +215,9 @@ With prefix ARG ask for extra arguments."
       (aw-switch-to-window win)))
   
   :bind
-  ("M-o" . ace-window))
+  ("C-'" . ace-window))
 
 (use-package fireplace)
-
-(use-package git-auto-commit-mode
-  :config
-  (setq gac-automatically-push-p t))
 
 (use-package dired
   :ensure f
@@ -345,6 +274,15 @@ With prefix ARG ask for extra arguments."
 (setq comint-scroll-to-bottom-on-input t)
 (setq comint-scroll-to-bottom-on-output t)
 (setq comint-move-point-for-output nil)
+
+(defun mp/highlight-selected-window ()
+  "Highlight selected window with a different background color."
+  (walk-windows (lambda (w)
+                  (unless (eq w (selected-window))
+                    (with-current-buffer (window-buffer w)
+                      (buffer-face-set '(:background "gray"))))))
+  (buffer-face-set 'default))
+(add-hook 'buffer-list-update-hook 'highlight-selected-window)
 
 ;; automatically switch to the next buffer in a new split
 (defun mp/vsplit-last-buffer ()
