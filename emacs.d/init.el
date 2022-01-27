@@ -31,7 +31,22 @@
 ;; Install and configure required packages
 ;;
 
-(use-package dumb-jump)
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
+(use-package lsp-mode
+  :init
+  (setq lsp-diagnostic-package :auto)
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (ess-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+(use-package restart-emacs)
 
 (use-package zoom-window
   :bind ("C-z" . zoom-window-zoom))
@@ -39,7 +54,7 @@
 (use-package windmove
   :config
   ;; wrap around at edges
-  (setq windmove-wrap-around nil)
+  (setq windmove-wrap-around t)
   :bind
   ("M-h" . windmove-left)
   ("M-l" . windmove-right)
@@ -98,14 +113,14 @@
 ;; 2. run (pdf-tools-install) which downloads and installs
 ;; bunch of other things - note that this needs to be run with
 ;; each re-start of Emacs
-;; (use-package pdf-tools
-;;  :if window-system
-;;  :init
-;;  (pdf-tools-install)
-;;  :bind
-;;  (:map pdf-view-mode-map
-;;        ("k" . pdf-view-previous-line-or-previous-page)
-;;        ("j" . pdf-view-next-line-or-next-page)))
+(use-package pdf-tools
+  :if window-system
+  :init
+  (pdf-tools-install)
+  :bind
+  (:map pdf-view-mode-map
+        ("k" . pdf-view-previous-line-or-previous-page)
+        ("j" . pdf-view-next-line-or-next-page)))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
@@ -151,8 +166,6 @@
   :init
   (require 'ess-site)
   :config
-  ;; set location of R (useful for custom compiled R on a server and
-  ;; another R on the local machine)
   (define-key inferior-ess-mode-map (kbd "C-c C-w") nil)
   (setq inferior-R-args "--no-restore-history --no-save --no-restore-data"
         ess-use-flymake nil
@@ -189,7 +202,9 @@ With prefix ARG ask for extra arguments."
 
 (defun mp/ess-settings ()
   (setq ess-indent-level 2)
-  (setq ess-style 'RStudio))
+  (setq ess-style 'RStudio)
+  ;; do not use ESS for xref lookups
+  (add-to-list 'xref-backend-functions #'dumb-jump-xref-activate))
 (add-hook 'ess-mode-hook 'mp/ess-settings)
 
 (use-package avy
@@ -241,10 +256,10 @@ With prefix ARG ask for extra arguments."
 (setq backup-directory-alist `(("." . "~/.saves")))
 
 (tool-bar-mode -1)
-(toggle-scroll-bar -1)
-(menu-bar-no-scroll-bar)
+;; (toggle-scroll-bar -1)
+;; (menu-bar-no-scroll-bar)
 (pixel-scroll-mode 1)
-(setq inhibit-splash-screen t)
+;; (setq inhibit-splash-screen t)
 
 (setq visible-bell t)
 
@@ -282,7 +297,7 @@ With prefix ARG ask for extra arguments."
                     (with-current-buffer (window-buffer w)
                       (buffer-face-set '(:background "gray"))))))
   (buffer-face-set 'default))
-(add-hook 'buffer-list-update-hook 'highlight-selected-window)
+(add-hook 'buffer-list-update-hook 'mp/highlight-selected-window)
 
 ;; automatically switch to the next buffer in a new split
 (defun mp/vsplit-last-buffer ()
@@ -352,8 +367,9 @@ there's no active region."
 (if (file-exists-p custom-file)
     (load custom-file))
 
-(load "my-shell")
-
 (if (display-graphic-p)
     (progn (toggle-frame-maximized)
            (menu-bar-mode -1)))
+
+(load "my-shell")
+
