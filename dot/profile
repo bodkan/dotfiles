@@ -11,6 +11,7 @@ shopt -s histappend
 shopt -s cmdhist
 
 export PATH="$HOME/.my_local/bin:$PATH"
+PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 
 alias ls="ls --color=auto"
 alias ll="ls -l"
@@ -108,3 +109,4 @@ function parse_git_dirty {
 }
 
 export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\] \n \\$ "
+eval "$(/opt/homebrew/bin/brew shellenv)"
