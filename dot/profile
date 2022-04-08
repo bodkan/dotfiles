@@ -108,5 +108,7 @@ function parse_git_dirty {
     fi
 }
 
-export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\] \n \\$ "
+export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\] \n${USER} \\$ "
+
 eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(pyenv init --path)"
