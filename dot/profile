@@ -11,19 +11,6 @@ shopt -s histappend
 shopt -s cmdhist
 
 export PATH="$HOME/.my_local/bin:$PATH"
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
-export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-export PATH="/usr/local/opt/openjdk/bin:$PATH"
-
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    export LDFLAGS="-L $(xcrun --show-sdk-path)/usr/lib -L brew --prefix bzip2/lib"
-    export CFLAGS="-L $(xcrun --show-sdk-path)/usr/include -L brew --prefix bzip2/include"
-fi
-
-# help the linker find libraries (added because of tmux on Willerslev servers)
-export LD_LIBRARY_PATH=$HOME/.my_local/lib:$LD_LIBRARY_PATH
-export MANPATH=$HOME/.my_local/share/man:$MANPATH
 
 alias ls="ls --color=auto"
 alias ll="ls -l"
@@ -51,87 +38,6 @@ alias gp="git push"
 alias gf="git pull"
 alias gl="git log --oneline --decorate --graph"
 alias gll="git log"
-
-# Do one of the following based on specified function arguments
-#   - activate the snakemake environment
-#   - run a single snakemake rule using one core
-#   - run a bunch of snakemake rules on a given number of cores
-function smk() {
-    conda activate snakemake
-    if [[ "$#" -eq 1 ]]; then
-        snakemake --use-conda --cores 1 $1
-    elif [[ "$#" -ge 2 ]]; then
-        if [[ $1 =~ ^[0-9]+$ ]] ; then
-            num_cores=$1
-            shift
-        elif [[ $1 = "all" ]] ; then
-            num_cores="all"
-            shift
-        else
-            num_cores=1
-        fi
-        snakemake --use-conda --cores $num_cores $@
-    fi
-}
-
-# Either activate a given snakemake conda environment X (creating it
-# first if necessary based on the contents of rules/envs/X.yaml) or
-# list the number of conda environments present on the system.
-function smkenv() {
-    if [[ -z "$1" ]]; then
-        echo "Missing conda environment name"
-        echo "=============================="
-        conda env list | tail -n+3
-        return 1
-    fi
-
-    if [[ ! -e "workflow/Snakefile" ]]; then
-        echo "Not in a standard Snakemake project directory"
-        return 1
-    fi
-
-    # compose the name of the Snakemake project conda environment
-    dir=`basename $(pwd)`
-    name=${dir}-${1}
-    # get all environments already created
-    envs=$(conda env list | awk '!/^#/ && !/^ / { if (length($1)) print $1 }') 
-
-    # check if the requested conda environment is already present and if not
-    # create it now
-    if [[ ! $envs =~ $name ]]; then
-        conda env create -f workflow/envs/${name}.yaml -n ${name}
-    fi
-    conda activate $name
-    MANPATH=$CONDA_PREFIX/share/man:$MANPATH
-}
-
-# Delete a snakemake conda environment.
-function smkrm() {
-    if [[ -z "$1" ]]; then
-        echo "Missing conda environment name"
-        return 1
-    fi
-
-    if [[ ! -e "workflow/Snakefile" ]]; then
-        echo "Not in a standard Snakemake project directory"
-        return 1
-    fi
-
-    # compose the name of the Snakemake project conda environment
-    dir=`basename $(pwd)`
-    name=${dir}-${1}
-    # get all environments already created
-    envs=$(conda env list | awk '!/^#/ && !/^ / { if (length($1)) print $1 }') 
-
-    # check if the requested conda environment is already present and if not
-    # create it now
-    if [[ ! $envs =~ $name ]]; then
-        echo "Conda environment '${name}' does not exist"
-        return 1
-    fi
-    conda deactivate
-    conda env remove -n $name
-}
 
 # "smart" viewer function
 function v() {
@@ -202,19 +108,3 @@ function parse_git_dirty {
 }
 
 export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\] \n \\$ "
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/.my_local/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/.my_local/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/.my_local/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/.my_local/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-

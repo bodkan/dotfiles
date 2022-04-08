@@ -1,5 +1,0 @@
-auto_activate_base: true
-channels:
-  - conda-forge
-  - bioconda
-  - defaults
