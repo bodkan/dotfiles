@@ -7,4 +7,4 @@ local({
 })
 
 Sys.setenv("_R_CHECK_LENGTH_1_CONDITION_" = "true")
-
+Sys.setenv("R_DEVEL_LOCAL" = "true")
