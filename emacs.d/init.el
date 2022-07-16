@@ -31,25 +31,8 @@
 ;; Install and configure required packages
 ;;
 
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode))
-
-(use-package lsp-mode
-  :init
-  (setq lsp-diagnostic-package :auto)
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (ess-mode . lsp)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
-
-(use-package restart-emacs)
-
 (use-package zoom-window
-  :bind ("C-z" . zoom-window-zoom))
+  :bind ("M-z" . zoom-window-zoom))
 
 (use-package windmove
   :config
@@ -61,53 +44,11 @@
   ("M-k" . windmove-up)
   ("M-j" . windmove-down))
 
-(use-package marginalia
-  :init
-  (marginalia-mode)
-
-  ;; When using Selectrum, ensure that Selectrum is refreshed when
-  ;; cycling annotations.
-  (advice-add #'marginalia-cycle :after
-              (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit))))
-
-  ;; prefer richer, more heavy, annotations over the lighter default
-  ;; variant (`marginalia-cycle' switches between the annotators)
-  (setq marginalia-annotators
-        '(marginalia-annotators-heavy marginalia-annotators-light nil))
-        
-  :bind (("M-A" . marginalia-cycle)
-         :map minibuffer-local-map
-         ("M-A" . marginalia-cycle)))
-
-(use-package expand-region
-  :bind
-  ("C-=" . 'er/expand-region))
-
 (use-package isend-mode
   :config
   (add-hook 'isend-mode-hook 'isend-default-shell-setup)
   (add-hook 'isend-mode-hook 'isend-default-ipython-setup)
   (add-hook 'isend-mode-hook 'isend-default-julia-setup))
-
-(use-package projectile
-  :ensure t
-  :init
-  (projectile-mode +1)
-  :config
-  (setq projectile-switch-project-action #'projectile-dired)
-  :bind (:map projectile-mode-map
-              ("C-;" . projectile-command-map)))
-
-(use-package selectrum-prescient
-  :config
-  (selectrum-prescient-mode +1)
-  (prescient-persist-mode +1))
-
-(use-package selectrum
-  :init
-  (selectrum-mode +1)
-  :config
-  (setq selectrum-num-candidates-displayed 20))
 
 ;; 1. brew install poppler automake
 ;; 2. run (pdf-tools-install) which downloads and installs
@@ -128,16 +69,7 @@
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "LANG"))
 
-(use-package diminish)
-
-(use-package dired-x
-  :ensure nil   ;; this allows use-package with "uninstallable" packages?
-  :init
-  (setq dired-omit-files "^\\...+$")
-  (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1))))
-
 (use-package which-key
-  :diminish which-key-mode
   :init
   (which-key-mode))
 
@@ -151,7 +83,6 @@
   :config
   (setq magit-refresh-status-buffer nil)
   (remove-hook 'server-switch-hook 'magit-commit-diff)
-  (remove-hook 'with-editor-filter-visit-hook 'magit-commit-diff)
   :bind
   ("C-x g" . magit-status))
 
@@ -166,39 +97,11 @@
   :init
   (require 'ess-site)
   :config
-  (define-key inferior-ess-mode-map (kbd "C-c C-w") nil)
   (setq inferior-R-args "--no-restore-history --no-save --no-restore-data"
         ess-use-flymake nil
         ess-eval-visibly nil
         ess-eval-empty t
-        ess-history-file nil)
-  :bind
-  ("C-M-;" . mp/ess-httpgd-open))
-
-(defun mp/ess-httpgd-open (&optional arg)
-  "Open browser window with the httpgd plot output"
-  (interactive)
-  (ess-eval-linewise "httpgd::hgd_browse()"))
-
-(defun mp/ess-pkgdown-build-site (&optional arg)
-  "Interface for `devtools::document()'.
-With prefix ARG ask for extra arguments."
-  (interactive "P")
-  (ess-r-package-eval-linewise
-   "pkgdown:::build_site_external(%s)\n" "Building website %s" arg
-   '("" (read-string "Arguments: "))))
-
-(defun mp/insert-section ()
-  (interactive)
-  (let ((delim (make-string (- 70 (current-column)) ?#)))
-    (insert delim)
-    (newline-and-indent)
-    (insert "# ")
-    (newline-and-indent)
-    (insert delim)
-    (previous-line)
-    (move-end-of-line nil)
-    (insert " ")))
+        ess-history-file nil))
 
 (defun mp/ess-settings ()
   (setq ess-indent-level 2)
@@ -324,8 +227,6 @@ With prefix ARG ask for extra arguments."
 (global-set-key (kbd "M-`") 'other-frame)
 
 (global-set-key (kbd "C-x d") 'dired)
-
-(global-set-key (kbd "C-M-w") 'writeroom-mode)
 
 (mouse-avoidance-mode 'none)
 
