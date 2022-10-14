@@ -123,4 +123,3 @@ fi
 eval "$(pyenv init --path)"
 
 export R_HAS_GGTREE="TRUE"
-. "$HOME/.cargo/env"
