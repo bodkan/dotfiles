@@ -10,8 +10,8 @@ export HISTTIMEFORMAT="%h %d %H:%M:%S "
 shopt -s histappend
 shopt -s cmdhist
 
-export PATH="$HOME/.my_local/bin:$PATH"
-PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="$HOME/.my_local/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="$HOME/.my_local/AdmixTools/bin:$PATH"
 
 alias ls="ls --color=auto"
 alias ll="ls -l"
@@ -123,3 +123,4 @@ fi
 eval "$(pyenv init --path)"
 
 export R_HAS_GGTREE="TRUE"
+. "$HOME/.cargo/env"
