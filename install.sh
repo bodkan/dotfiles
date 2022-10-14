@@ -5,9 +5,6 @@ for f in dot/*; do
     ln -sv `realpath $f` ~/.`basename $f`
 done
 
-# link the entire ~/.emacs.d/ config directory
-[ ! -d ~/.emacs.d ] && ln -sv `realpath emacs.d/` ${HOME}/.emacs.d
-
 mkdir ~/.my_local
 mkdir ~/.my_local/bin
 
