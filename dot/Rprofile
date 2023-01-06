@@ -8,4 +8,12 @@ local({
 
 Sys.setenv("_R_CHECK_LENGTH_1_CONDITION_" = "true")
 Sys.setenv("_R_CHECK_LENGTH_1_LOGIC2_" = "true")
+
 options("install.packages.compile.from.source" = "never")
+
+if (interactive() && Sys.getenv("RSTUDIO") == "") {
+  Sys.setenv(TERM_PROGRAM = "vscode")
+  source(file.path(Sys.getenv(if (.Platform$OS.type == "windows") "USERPROFILE" else "HOME"), ".vscode-R", "init.R"))
+  options(vsc.plot = FALSE)
+}
+
