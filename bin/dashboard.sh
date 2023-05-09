@@ -26,12 +26,12 @@ if ! tmux ls | grep -q "^$session_name:"; then
 
     # Create a new tmux session with the first host
     echo "Connecting to ${HOSTNAMES[0]}..."
-    tmux new-session -d -s "$session_name" -n ${HOSTNAMES[0]} "ssh ${HOSTNAMES[0]} 'htop'"
+    tmux new-session -d -s "$session_name" -n ${HOSTNAMES[0]} "ssh ${HOSTNAMES[0]}"
 
     # Iterate through the rest of the hostnames and create a new window for each
     for i in "${HOSTNAMES[@]:1}"; do
         echo "Connecting to ${i}..."
-        tmux new-window -t "$session_name" -n $i "ssh ${i} 'htop'"
+        tmux new-window -t "$session_name" -n $i "ssh ${i}"
     done
 else
     echo "A tmux session ${session_name} already exists!"
