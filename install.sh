@@ -8,6 +8,14 @@ done
 mkdir ~/.my_local
 mkdir ~/.my_local/bin
 
+for f in bin/*; do
+    ln -sv `realpath $f` ~/.my_local/bin/`basename $f`
+done
+
+
+mkdir ~/.ssh
+cp racimolab.txt ~/.ssh
+
 # generate ~/.Renviron file with necessary configs
 echo "PATH=$PATH" > ~/.Renviron
 if [[ "$OSTYPE" == "darwin"* ]]; then
