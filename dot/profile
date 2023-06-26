@@ -17,14 +17,13 @@ alias ls="ls --color=auto"
 alias ll="ls -l"
 alias lh="ls -lh"
 alias la="ll -a"
-alias ts="tmux new-session -A -s default"
 alias q="qstat | less -S"
 alias qm="qstat -u martin_petr | less -S"
 alias h="htop"
 alias hm="htop -u krd114"
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
-alias mnt='sshfs krd114@r6:/maps/projects/racimolab/people/krd114/ $HOME/Cluster -ovolname=krd114'
-alias umnt='umount ~/Cluster'
+# alias mnt='sshfs krd114@r6:/maps/projects/racimolab/people/krd114/ $HOME/Cluster -ovolname=krd114'
+# alias umnt='umount ~/Cluster'
 
 alias gs="git status"
 alias ga="git add"
@@ -36,9 +35,8 @@ alias gd="git diff"
 alias gdc="gd --cached"
 alias gb="git branch"
 alias gp="git push"
-alias gf="git pull"
-alias gl="git log --oneline --decorate --graph"
-alias gll="git log"
+alias glg="git log --oneline --decorate --graph"
+alias gl="git log"
 
 # "smart" viewer function
 function v() {
@@ -125,4 +123,5 @@ fi
 
 eval "$(pyenv init --path)"
 
+# R development specific stuff
 export R_HAS_GGTREE="TRUE"
