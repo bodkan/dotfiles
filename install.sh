@@ -21,7 +21,7 @@ echo "PATH=$PATH" > ~/.Renviron
 if [[ "$OSTYPE" == "darwin"* ]]; then
     mkdir ~/.my_local/R_LIBS
     echo "R_LIBS_USER=~/.my_local/R_LIBS" >> ~/.Renviron
-else if [[ -z "$IN_DOCKER" ]]; then
+elif [ -z "$IN_DOCKER" ]; then
     echo "R_LIBS_USER=~/projects/.R_LIBS" >> ~/.Renviron
 fi
 echo "R_BUILD_TAR=tar" >> ~/.Renviron
