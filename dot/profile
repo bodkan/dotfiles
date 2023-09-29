@@ -118,7 +118,9 @@ else
     export DOCKER_HOST=unix:///run/user/243674353/docker.sock
 fi
 
-eval "$(pyenv init --path)"
+if [ "$DOCKER_CONTAINER" ];
+    eval "$(pyenv init --path)"
+fi
 
 # R development specific stuff
 export R_HAS_GGTREE="TRUE"
