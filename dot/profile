@@ -118,7 +118,7 @@ else
     export DOCKER_HOST=unix:///run/user/243674353/docker.sock
 fi
 
-if [ "$DOCKER_CONTAINER" ];
+if [ "$DOCKER_CONTAINER" ]; then
     eval "$(pyenv init --path)"
 fi
 
