@@ -1,0 +1,18 @@
+{
+    "nextTab": "Shift+Cmd+[",
+    "previousTab": "Shift+Cmd+]",
+    "switchToTab": "Shift+Cmd+.",
+    "executeCurrentChunk": "Ctrl+Cmd+Enter",
+    "insertChunkR": "Ctrl+Cmd+I",
+    "goToNextChunk": "Ctrl+Cmd+N",
+    "goToPrevChunk": "Ctrl+Cmd+P",
+    "nextTerminal": "Ctrl+Cmd+]",
+    "previousTerminal": "Ctrl+Cmd+[",
+    "sourceNavigateForward": "Ctrl+-",
+    "sourceNavigateBack": "Ctrl+Cmd+-",
+    "switchFocusSourceConsole": "Ctrl+'",
+    "activateTerminal": "Ctrl+T",
+    "activateSource": "Ctrl+I",
+    "activateConsole": "Ctrl+O",
+    "newTerminal": "Ctrl+Cmd+T"
+}

@@ -16,9 +16,9 @@ done
 mkdir ~/.ssh
 cp racimolab.txt ~/.ssh
 
-mkdir -p ~/.config/rstudio
+mkdir -p ~/.config/rstudio/keybindings
 ln -sv `realpath rstudio-prefs.json` ~/.config/rstudio/rstudio-prefs.json
-
+ln -sv `realpath rstudio_bindings.json` ~/.config/rstudio/keybindings/rstudio_bindings.json
 
 # generate ~/.Renviron file with necessary configs
 echo "PATH=$PATH" > ~/.Renviron
