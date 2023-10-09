@@ -1,0 +1,46 @@
+{
+    "save_workspace": "never",
+    "load_workspace": false,
+    "remove_history_duplicates": true,
+    "posix_terminal_shell": "bash",
+    "relative_line_numbers": true,
+    "highlight_selected_line": true,
+    "panes": {
+        "quadrants": [
+            "Source",
+            "TabSet1",
+            "Console",
+            "TabSet2",
+            "HiddenTabSet"
+        ],
+        "tabSet1": [
+            "Environment",
+            "History",
+            "Connections",
+            "Build",
+            "VCS",
+            "Tutorial",
+            "Presentation"
+        ],
+        "tabSet2": [
+            "Files",
+            "Plots",
+            "Packages",
+            "Help",
+            "Viewer",
+            "Presentations"
+        ],
+        "hiddenTabSet": [],
+        "console_left_on_top": false,
+        "console_right_on_top": true,
+        "additional_source_columns": 0
+    },
+    "editor_keybindings": "vim",
+    "strip_trailing_whitespace": true,
+    "syntax_color_console": true,
+    "rainbow_parentheses": true,
+    "rmd_chunk_output_inline": false,
+    "terminal_bell_style": "none",
+    "python_project_environment_automatic_activate": false,
+    "editor_scroll_multiplier": 200
+}

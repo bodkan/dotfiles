@@ -16,6 +16,10 @@ done
 mkdir ~/.ssh
 cp racimolab.txt ~/.ssh
 
+mkdir -p ~/.config/rstudio
+ln -sv `realpath rstudio-prefs.json` ~/.config/rstudio/rstudio-prefs.json
+
+
 # generate ~/.Renviron file with necessary configs
 echo "PATH=$PATH" > ~/.Renviron
 if [[ "$OSTYPE" == "darwin"* ]]; then
