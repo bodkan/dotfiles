@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [[ $# -ne 2 ]]; then
+    echo "Usage: $0 <server> <port>"
+    exit 1
+fi
+
+server="$1"
+port="$2"
+
+# Starting SSH tunnel in the background if server is not localhost
+if [[ "${server}" != "localhost" ]]; then
+    ssh -f -N -L localhost:"${port}":localhost:"${port}" "${server}" || {
+        echo "SSH connection failed. Exiting."
+        exit 1
+    }
+fi
+
+GOOGLE_API_KEY="" chromium --app=http://localhost:"${port}" --new-window &
