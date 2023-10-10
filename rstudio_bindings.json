@@ -15,5 +15,6 @@
     "activateSource": "Ctrl+I",
     "activateConsole": "Ctrl+O",
     "newTerminal": "Ctrl+Cmd+T",
-    "maximizeConsole": "Ctrl+Shift+O"
+    "maximizeConsole": "Ctrl+Shift+O",
+    "commentUncomment": "Shift+Cmd+/"
 }
