@@ -16,5 +16,7 @@
     "activateConsole": "Ctrl+O",
     "newTerminal": "Ctrl+Cmd+T",
     "maximizeConsole": "Ctrl+Shift+O",
-    "commentUncomment": "Shift+Cmd+/"
+    "commentUncomment": "Shift+Cmd+/",
+    "debugBreakpoint": "Ctrl+Shift+D",
+    "debugClearBreakpoints": "Ctrl+Shift+Cmd+D"
 }
