@@ -18,5 +18,6 @@
     "maximizeConsole": "Ctrl+Shift+O",
     "commentUncomment": "Shift+Cmd+/",
     "debugBreakpoint": "Ctrl+Shift+D",
-    "debugClearBreakpoints": "Ctrl+Shift+Cmd+D"
+    "debugClearBreakpoints": "Ctrl+Shift+Cmd+D",
+    "roxygenizePackage": "Shift+Cmd+D"
 }
