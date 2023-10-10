@@ -14,5 +14,6 @@
     "activateTerminal": "Ctrl+T",
     "activateSource": "Ctrl+I",
     "activateConsole": "Ctrl+O",
-    "newTerminal": "Ctrl+Cmd+T"
+    "newTerminal": "Ctrl+Cmd+T",
+    "maximizeConsole": "Ctrl+Shift+O"
 }
