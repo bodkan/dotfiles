@@ -18,7 +18,7 @@ if [[ "${server}" != "localhost" ]]; then
         kill -9 $PID
     fi
 
-    ssh -f -N -L localhost:"${port}":localhost:"${port}" "${server}" || {
+    autossh -M 0 -f -N -L localhost:"${port}":localhost:"${port}" "${server}" || {
         echo "SSH connection failed. Exiting."
         exit 1
     }
