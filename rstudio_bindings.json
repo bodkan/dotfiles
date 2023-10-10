@@ -19,5 +19,7 @@
     "commentUncomment": "Shift+Cmd+/",
     "debugBreakpoint": "Ctrl+Shift+D",
     "debugClearBreakpoints": "Ctrl+Shift+Cmd+D",
-    "roxygenizePackage": "Shift+Cmd+D"
+    "roxygenizePackage": "Shift+Cmd+D",
+    "previousPlot": "Alt+Cmd+Left",
+    "nextPlot": "Alt+Cmd+Right"
 }
