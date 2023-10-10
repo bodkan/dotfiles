@@ -41,5 +41,8 @@
     "rainbow_parentheses": true,
     "rmd_chunk_output_inline": false,
     "terminal_bell_style": "none",
-    "editor_scroll_multiplier": 200
+    "editor_scroll_multiplier": 200,
+    "show_line_numbers": false,
+    "rmd_viewer_type": "pane",
+    "auto_save_on_blur": true
 }
