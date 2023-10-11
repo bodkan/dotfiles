@@ -10,7 +10,15 @@ port="$2"
 
 # Starting SSH tunnel in the background if server is not localhost
 if [[ "${server}" != "localhost" ]]; then
-    ssh -f -N -L localhost:"${port}":localhost:"${port}" "${server}" || {
+    # check if the port is occupied and get the PID of the process
+    PID=$(lsof -ti:${port})
+
+    # if PID is not empty, kill it
+    if [[ -n $PID ]]; then
+        kill -9 $PID
+    fi
+
+    autossh -M 0 -f -N -L localhost:"${port}":localhost:"${port}" "${server}" || {
         echo "SSH connection failed. Exiting."
         exit 1
     }
