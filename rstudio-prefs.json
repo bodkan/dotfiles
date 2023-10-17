@@ -46,5 +46,6 @@
     "auto_save_on_blur": true,
     "save_files_before_build": true,
     "toolbar_visible": false,
-    "show_panel_focus_rectangle": true
+    "show_panel_focus_rectangle": true,
+    "jobs_tab_visibility": "shown"
 }

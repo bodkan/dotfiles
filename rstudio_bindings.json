@@ -1,6 +1,6 @@
 {
-    "nextTab": "Shift+Cmd+[",
-    "previousTab": "Shift+Cmd+]",
+    "nextTab": "Shift+Cmd+]",
+    "previousTab": "Shift+Cmd+[",
     "switchToTab": "Shift+Cmd+.",
     "executeCurrentChunk": "Ctrl+Cmd+Enter",
     "insertChunkR": "Ctrl+Cmd+I",
