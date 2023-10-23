@@ -10,30 +10,30 @@
             "Source",
             "TabSet1",
             "Console",
-            "TabSet2",
-            "HiddenTabSet"
+            "TabSet2"
         ],
         "tabSet1": [
             "Environment",
-            "History",
             "Connections",
             "Build",
-            "VCS",
-            "Tutorial",
             "Presentation"
         ],
         "tabSet2": [
+            "History",
             "Files",
             "Plots",
             "Packages",
             "Help",
+            "VCS",
             "Viewer",
             "Presentations"
         ],
-        "hiddenTabSet": [],
+        "hiddenTabSet": [
+            "Tutorial"
+        ],
         "console_left_on_top": false,
         "console_right_on_top": true,
-        "additional_source_columns": 0
+        "additional_source_columns": 1
     },
     "editor_keybindings": "vim",
     "strip_trailing_whitespace": true,
