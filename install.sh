@@ -23,16 +23,16 @@ ln -sv `realpath rstudio_bindings.json` ~/.config/rstudio/keybindings/rstudio_bi
 # save GitHub access token if present
 if [[ -f ~/.Renviron ]]; then
     GITHUB_PAT=$(awk -F= '/GITHUB_PAT/{print $2}' ~/.Renviron)
+    echo GITHUB_PAT=$GITHUB_PAT >> ~/.Renviron
 fi
 
 # generate ~/.Renviron file with necessary configs
 echo "PATH=$PATH" > ~/.Renviron
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    mkdir -p ~/.my_local/R_LIBS
-    echo "R_LIBS_USER=~/.my_local/R_LIBS" >> ~/.Renviron
-elif [ -z "$IN_DOCKER" ]; then
-    echo "R_LIBS_USER=~/projects/.R_LIBS" >> ~/.Renviron
-fi
-echo "R_BUILD_TAR=tar" >> ~/.Renviron
+#if [[ "$OSTYPE" == "darwin"* ]]; then
+#    mkdir -p ~/.my_local/R_LIBS
+#    echo "R_LIBS_USER=~/.my_local/R_LIBS" >> ~/.Renviron
+#elif [ -z "$IN_DOCKER" ]; then
+#    echo "R_LIBS_USER=~/projects/.R_LIBS" >> ~/.Renviron
+#fi
+#echo "R_BUILD_TAR=tar" >> ~/.Renviron
 
-echo GITHUB_PAT=$GITHUB_PAT >> ~/.Renviron
