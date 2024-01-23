@@ -10,6 +10,7 @@ export HISTTIMEFORMAT="%h %d %H:%M:%S "
 shopt -s histappend
 shopt -s cmdhist
 
+export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="$HOME/.my_local/bin:$HOME/.my_local/AdmixTools/bin:$PATH"
 
 alias ls="ls --color=auto"
