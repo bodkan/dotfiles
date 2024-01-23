@@ -29,27 +29,6 @@ alias gp="git push"
 alias glg="git log --oneline --decorate --graph"
 alias gl="git log"
 
-# "smart" viewer function
-function v() {
-    file="$1"
-    shift
-    rest="$*"
-
-    if [[ -d $file ]]; then
-        ls -l $file
-    elif [[ $file =~ ".vcf.gz" ]]; then
-        bcftools view $file $rest | less -S
-    elif [[ $file =~ ".bcf" ]]; then
-        bcftools view $file $rest | less -S
-    elif [[ $file =~ ".gz" ]]; then
-        zless -S $file | less -S
-    elif [[ $file =~ ".bam" ]]; then
-        samtools view $file $rest | less -S
-    else
-        less -S $file
-    fi
-}
-
 # get current branch in git repo
 function parse_git_branch() {
     BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
