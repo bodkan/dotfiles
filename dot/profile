@@ -76,7 +76,7 @@ function parse_git_dirty {
     fi
 }
 
-export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\] \n${USER} \\$ "
+export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\] \n\u \\$ "
 
 # initialize Homebrew on macOS
 if [[ "$OSTYPE" == "darwin"* ]]; then
