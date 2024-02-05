@@ -3,8 +3,6 @@ export LANG=en_US.UTF-8
 
 export TERM=xterm
 
-export EDITOR=vim
-
 export HISTSIZE=10000
 export HISTTIMEFORMAT="%h %d %H:%M:%S "
 shopt -s histappend
@@ -15,6 +13,9 @@ export PATH="$HOME/.my_local/bin:$HOME/.my_local/AdmixTools/bin:$PATH"
 
 alias ls="ls --color=auto"
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
+
+export EDITOR=nvim
+alias vimdiff='nvim -d'
 
 alias gs="git status"
 alias ga="git add"
