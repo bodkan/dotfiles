@@ -15,7 +15,8 @@ alias ls="ls --color=auto"
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
 
 export EDITOR=nvim
-alias vimdiff='nvim -d'
+alias vim="nvim"
+alias vimdiff="nvim -d"
 
 alias gs="git status"
 alias ga="git add"
