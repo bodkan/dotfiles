@@ -9,7 +9,7 @@ shopt -s histappend
 shopt -s cmdhist
 
 export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="$HOME/.my_local/bin:$HOME/.my_local/AdmixTools/bin:$PATH"
+export PATH="$HOME/.my_local/bin:$HOME/.my_local/AdmixTools/bin:/Library/TeX/texbin:$PATH"
 
 alias ls="ls --color=auto"
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
