@@ -32,6 +32,7 @@ alias glg="git log --oneline --decorate --graph"
 alias gl="git log"
 
 function vpn-up() {
+  # three lines: username, password, vpn.ku.dk
   VPN_FILE=${HOME}/.ku_vpn
   if [ ! -f $VPN_FILE ]; then
     echo "Error: missing $VPN_FILE"
