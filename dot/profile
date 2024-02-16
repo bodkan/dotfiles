@@ -14,10 +14,6 @@ export PATH="$HOME/.my_local/bin:$HOME/.my_local/AdmixTools/bin:$PATH"
 alias ls="ls --color=auto"
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
 
-export EDITOR=nvim
-alias vim="nvim"
-alias vimdiff="nvim -d"
-
 alias gs="git status"
 alias ga="git add"
 alias go="git checkout"
