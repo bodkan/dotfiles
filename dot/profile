@@ -9,7 +9,7 @@ shopt -s histappend
 shopt -s cmdhist
 
 export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="$HOME/.my_local/bin:$HOME/.my_local/AdmixTools/bin:$PATH"
+export PATH="$HOME/.my_local/bin:$HOME/.my_local/AdmixTools/bin:/Library/TeX/texbin:$PATH"
 
 alias ls="ls --color=auto"
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
@@ -26,6 +26,26 @@ alias gb="git branch"
 alias gp="git push"
 alias glg="git log --oneline --decorate --graph"
 alias gl="git log"
+
+function vpn-up() {
+  # three lines: username, password, vpn.ku.dk
+  VPN_FILE=${HOME}/.ku_vpn
+  if [ ! -f $VPN_FILE ]; then
+    echo "Error: missing $VPN_FILE"
+    return
+  fi
+  echo "Starting the vpn ..."
+
+  mapfile -t lines < "$VPN_FILE"
+  USERNAME="${lines[0]}"
+  PASSWORD="${lines[1]}"
+  VPN_SERVER="${lines[2]}"
+  echo $PASSWORD | sudo openconnect --background --passwd-on-stdin --user=$USERNAME $VPN_SERVER
+}
+
+function vpn-down() {
+  sudo kill -2 `pgrep openconnect`
+}
 
 # get current branch in git repo
 function parse_git_branch() {
