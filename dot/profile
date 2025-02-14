@@ -96,18 +96,12 @@ function parse_git_dirty {
 
 export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\]\`parse_git_branch\`\[\e[m\] \n\u \\$ "
 
-# initialize Homebrew on macOS
 if [[ "$OSTYPE" == "darwin"* ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
     export DOCKER_HOST=$(limactl list docker --format 'unix://{{.Dir}}/sock/docker.sock')
-else # on Linux, initialize pyenv (but not inside Docker)
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
+else
     export PATH="$HOME/bin:$PATH"
     export DOCKER_HOST=unix:///run/user/243674353/docker.sock
-    if [ -z "$IN_DOCKER" ]; then
-        eval "$(pyenv init --path)"
-    fi
 fi
 
 # R development specific stuff
