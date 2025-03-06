@@ -9,4 +9,4 @@ local({
 Sys.setenv("_R_CHECK_LENGTH_1_CONDITION_" = "true")
 Sys.setenv("_R_CHECK_LENGTH_1_LOGIC2_" = "true")
 
-options("install.packages.compile.from.source" = "never")
+options(install.packages.compile.from.source = "never")
