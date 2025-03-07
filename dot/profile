@@ -12,6 +12,7 @@ export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="/Library/TeX/texbin:$PATH"
 export PATH="$HOME/.my_local/bin:$HOME/.my_local/AdmixTools/bin:$PATH"
+export PATH="/Applications/MacVim.app/Contents/bin:$PATH"
 
 alias ls="ls --color=auto"
 alias ll="ls -lh --color=auto"
