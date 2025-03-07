@@ -48,5 +48,6 @@
     "show_panel_focus_rectangle": true,
     "always_save_history": false,
     "python_project_environment_automatic_activate": false,
-    "terminal_python_integration": false
+    "terminal_python_integration": false,
+    "jobs_tab_visibility": "shown"
 }
