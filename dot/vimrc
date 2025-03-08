@@ -2,6 +2,8 @@
 " General settings
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
+let mapleader=","
+
 " how many lines of history VIM has to remember
 set history=500
 
@@ -12,7 +14,9 @@ filetype indent on
 set autoread
 au FocusGained,BufEnter * silent! checktime
 
-let mapleader = ","
+nnoremap <leader>r :source $MYVIMRC<cr>
+inoremap <leader>r <Esc>:source $MYVIMRC<cr>
+vnoremap <leader>r <Esc>:source $MYVIMRC<cr>
 
 " fast saving
 nmap <leader>w :w!<cr>
