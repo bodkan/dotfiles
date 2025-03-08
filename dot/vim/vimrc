@@ -96,7 +96,7 @@ syntax enable
 
 " set extra options when running in GUI mode
 if has("gui_running")
-    #set t_Co=256
+    "set t_Co=256
     set guitablabel=%M\ %t
     "let macvim_skip_colorscheme=1
 endif
