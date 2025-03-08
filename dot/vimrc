@@ -102,7 +102,7 @@ if has("gui_running")
 endif
 
 highlight colorcolumn ctermbg=lightgrey guibg=lightgrey
-highlight FoldColumn ctermbg=black guibg=black
+highlight FoldColumn ctermbg=NONE guibg=NONE
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Files
@@ -228,7 +228,7 @@ endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Helper functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Return true if paste mode is enabled
 function! HasPaste()
@@ -279,4 +279,3 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
-
