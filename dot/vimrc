@@ -1,0 +1,278 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" General settings
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" how many lines of history VIM has to remember
+set history=500
+
+filetype plugin on
+filetype indent on
+
+" auto read when a file is changed from the outside
+set autoread
+au FocusGained,BufEnter * silent! checktime
+
+let mapleader = ","
+
+" fast saving
+nmap <leader>w :w!<cr>
+
+" :W sudo saves the file
+command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+
+" number of lines to the cursor when moving vertically using j/k
+set so=10
+
+set number relativenumber
+
+set wildmenu
+
+set wildignore=*.o,*~,*.pyc
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+
+set ruler
+
+" height of the command bar
+set cmdheight=1
+
+set hidden
+
+set backspace=eol,start,indent
+
+set whichwrap+=<,>,h,l
+
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+
+" for regular expressions turn magic on
+set magic
+
+" show matching brackets when text indicator is over them
+set showmatch
+
+" show partial commands as they are typed
+set showcmd
+
+" how many tenths of a second to blink when matching brackets
+set mat=2
+
+" no annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" properly disable sound on errors on MacVim
+if has("gui_macvim")
+    autocmd GUIEnter * set vb t_vb=
+    set guifont=Menlo:h13
+endif
+
+" set regular expression engine automatically
+set regexpengine=0
+
+" set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+" use Unix as the standard file type
+set ffs=unix,dos,mac
+
+" always show the status line
+set laststatus=2
+
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Colors and fonts
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+syntax enable
+
+" set extra options when running in GUI mode
+if has("gui_running")
+    #set t_Co=256
+    set guitablabel=%M\ %t
+    "let macvim_skip_colorscheme=1
+endif
+
+highlight colorcolumn ctermbg=lightgrey guibg=lightgrey
+highlight FoldColumn ctermbg=black guibg=black
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Files
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set nobackup
+set nowb
+set noswapfile
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Tabs and indentation
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" use spaces instead of tabs
+set expandtab
+
+" pressing TAB respects context
+set smarttab
+
+" one TAB is four characters wide
+set shiftwidth=4
+set tabstop=4
+
+" break lines at word boundaries
+set lbr
+
+set autoindent
+set smartindent
+
+set wrap
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Visual mode
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" pressing * or # searches for the current visual selection
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Movement
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" fast jumping between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" close the current buffer
+map <leader>bd :Bclose<cr>:tabclose<cr>gT
+
+" close all the buffers
+map <leader>ba :bufdo bd<cr>
+
+map <leader>l :bnext<cr>
+map <leader>h :bprevious<cr>
+
+" managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
+map <leader>t<leader> :tabnext<cr>
+
+" toggle between this and the last accessed tab
+let g:lasttab = 1
+nmap <leader>tl :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()
+
+" open a new tab with the current buffer's path
+map <leader>te :tabedit <C-r>=escape(expand("%:p:h"), " ")<cr>/
+
+" switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" if a buffer is already open in another window/tab, switch to it
+set switchbuf=useopen,usetab,newtab
+" always show tabline
+set stal=2
+
+" return to last edit position when opening files (You want this!)
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Editing shortcuts
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" move a line of text using ALT+[jk] or Command+[jk] on mac
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+if has("mac") || has("macunix")
+  nmap <D-j> <M-j>
+  nmap <D-k> <M-k>
+  vmap <D-j> <M-j>
+  vmap <D-k> <M-k>
+endif
+
+" toggle paste mode on and off (prevent broken indentation etc.)
+map <leader>pp :setlocal paste!<cr>
+
+set showmode
+
+
+" delete trailing white space on save
+fun! CleanExtraSpaces()
+    let save_cursor = getpos(".")
+    let old_query = getreg('/')
+    silent! %s/\s\+$//e
+    call setpos('.', save_cursor)
+    call setreg('/', old_query)
+endfun
+
+if has("autocmd")
+    autocmd BufWritePre *.txt,*.R,*.py,*.md,*.Rmd,*.sh :call CleanExtraSpaces()
+endif
+
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Helper functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Return true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+" Do not close window when deleting a buffer
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+    let l:currentBufNum = bufnr("%")
+    let l:alternateBufNum = bufnr("#")
+
+    if buflisted(l:alternateBufNum)
+        buffer #
+    else
+        bnext
+    endif
+
+    if bufnr("%") == l:currentBufNum
+        new
+    endif
+
+    if buflisted(l:currentBufNum)
+        execute("bdelete! ".l:currentBufNum)
+    endif
+endfunction
+
+function! CmdLine(str)
+    call feedkeys(":" . a:str)
+endfunction
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
