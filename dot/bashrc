@@ -1,1 +1,46 @@
-source ~/.profile
+[[ $- != *i* ]] && return
+
+alias ls="ls --color=auto"
+alias ll="ls -lh --color=auto"
+
+alias R='R --no-save --no-restore-history --no-save --no-restore-data'
+
+alias gs="git status"
+alias ga="git add"
+alias go="git checkout"
+alias gc="git commit"
+alias gcm="gc -m"
+alias gca="gc --amend"
+alias gd="git diff"
+alias gdc="gd --cached"
+alias gb="git branch"
+alias gp="git push"
+alias glg="git log --oneline --decorate --graph"
+alias gl="git log"
+
+function vpn-up() {
+  # three lines expected in ~/.ku_vpn with username, password, vpn.ku.dk
+  VPN_FILE=${HOME}/.ku_vpn
+  if [ ! -f $VPN_FILE ]; then
+    echo "Error: missing $VPN_FILE"
+    return
+  fi
+  echo "Starting the vpn ..."
+
+  mapfile -t lines < "$VPN_FILE"
+  USERNAME="${lines[0]}"
+  PASSWORD="${lines[1]}"
+  VPN_SERVER="${lines[2]}"
+  echo $PASSWORD | sudo openconnect --background --passwd-on-stdin --user=$USERNAME $VPN_SERVER
+}
+
+function vpn-down() {
+  sudo kill -2 `pgrep openconnect`
+}
+
+export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\] \[\e[m\] \n\\$ "
+
+if [[ -f /.dockerenv ]]; then
+    PS1="[CONTAINER] $PS1"
+fi
+

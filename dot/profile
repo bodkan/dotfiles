@@ -14,45 +14,6 @@ export PATH="/Library/TeX/texbin:$PATH"
 export PATH="$HOME/.my_local/bin:$HOME/.my_local/AdmixTools/bin:$PATH"
 export PATH="/Applications/MacVim.app/Contents/bin:$PATH"
 
-alias ls="ls --color=auto"
-alias ll="ls -lh --color=auto"
-alias R='R --no-save --no-restore-history --no-save --no-restore-data'
-
-alias gs="git status"
-alias ga="git add"
-alias go="git checkout"
-alias gc="git commit"
-alias gcm="gc -m"
-alias gca="gc --amend"
-alias gd="git diff"
-alias gdc="gd --cached"
-alias gb="git branch"
-alias gp="git push"
-alias glg="git log --oneline --decorate --graph"
-alias gl="git log"
-
-function vpn-up() {
-  # three lines: username, password, vpn.ku.dk
-  VPN_FILE=${HOME}/.ku_vpn
-  if [ ! -f $VPN_FILE ]; then
-    echo "Error: missing $VPN_FILE"
-    return
-  fi
-  echo "Starting the vpn ..."
-
-  mapfile -t lines < "$VPN_FILE"
-  USERNAME="${lines[0]}"
-  PASSWORD="${lines[1]}"
-  VPN_SERVER="${lines[2]}"
-  echo $PASSWORD | sudo openconnect --background --passwd-on-stdin --user=$USERNAME $VPN_SERVER
-}
-
-function vpn-down() {
-  sudo kill -2 `pgrep openconnect`
-}
-
-export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\] \[\e[m\] \n\\$ "
-
 if [[ "$OSTYPE" == "darwin"* ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
     [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
@@ -64,3 +25,8 @@ fi
 
 # R development specific stuff
 export R_HAS_GGTREE="TRUE"
+
+if [[ -f $HOME/.bashrc && $- == *i* ]]; then
+    source $HOME/.bashrc
+fi
+
