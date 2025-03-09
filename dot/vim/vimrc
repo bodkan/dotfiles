@@ -86,7 +86,7 @@ set ffs=unix,dos,mac
 " always show the status line
 set laststatus=2
 
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ \ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Colors and fonts
@@ -223,8 +223,6 @@ endfun
 if has("autocmd")
     autocmd BufWritePre *.txt,*.R,*.py,*.md,*.Rmd,*.sh :call CleanExtraSpaces()
 endif
-
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Helper functions
