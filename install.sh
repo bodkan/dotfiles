@@ -2,7 +2,9 @@
 
 # create symlinks for all files under `./dot`
 for f in dot/*; do
-    ln -sv `realpath $f` $HOME/.`basename $f`
+    if [[ -f "$f" ]]; then
+        ln -sv `realpath $f` $HOME/.`basename $f`
+    fi
 done
 
 mkdir $HOME/.my_local
