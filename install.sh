@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# create symlinks for all files under `./dot`
 for f in dot/*; do
-    if [[ -f "$f" ]]; then
-        ln -sv `realpath $f` $HOME/.`basename $f`
+    if [[ -d "$f" ]]; then
+        ln -snv "$(realpath "$f")" "$HOME/.$(basename "$f")"
+    elif [[ -f "$f" ]]; then
+        ln -sv "$(realpath "$f")" "$HOME/.$(basename "$f")"
     fi
 done
 
@@ -34,6 +35,8 @@ if [[ -f $HOME/.Renviron ]]; then
 fi
 
 # install vim plugins
+
+# HELLO NEW CHANGE
 
 mkdir -p ~/.vim/pack/tpope/start
 cd ~/.vim/pack/tpope/start
