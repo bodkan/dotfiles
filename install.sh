@@ -30,3 +30,17 @@ if [[ -f ~/.Renviron ]]; then
     GITHUB_PAT=$(awk -F= '/GITHUB_PAT/{print $2}' ~/.Renviron)
     echo GITHUB_PAT=$GITHUB_PAT >> ~/.Renviron
 fi
+
+# install vim plugins
+
+mkdir -p ~/.vim/pack/tpope/start
+cd ~/.vim/pack/tpope/start
+git clone https://tpope.io/vim/surround.git
+vim -u NONE -c "helptags surround/doc" -c q
+
+# vim-gitgutter
+mkdir -p ~/.vim/pack/airblade/start
+cd ~/.vim/pack/airblade/start
+git clone https://github.com/airblade/vim-gitgutter.git
+vim -u NONE -c "helptags vim-gitgutter/doc" -c q
+
