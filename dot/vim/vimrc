@@ -88,6 +88,10 @@ set laststatus=2
 
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ \ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
+nnoremap <leader>n :set number! relativenumber!<cr>
+inoremap <leader>n :set <esc>number! relativenumber!<cr>
+vnoremap <leader>n :set <esc>number! relativenumber!<cr>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Colors and fonts
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -283,5 +287,5 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:gitgutter_enabled = 1
-map <leader>gg :GitGutterToggle<cr>
+map <leader>g :GitGutterToggle<cr>
 

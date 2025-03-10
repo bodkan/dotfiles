@@ -18,6 +18,16 @@ alias gp="git push"
 alias glg="git log --oneline --decorate --graph"
 alias gl="git log"
 
+alias eza="\\eza --colour=always --time-style=long-iso --no-quotes"  # defaults
+alias ll="eza -lg --git --group-directories-first -h -o"             # "ls -l"
+alias lld="eza -lhmuU --changed --group-directories-first -h -o"     # date-centric super-long "ls"
+alias llt="eza -lg -s time -h -o"                                    # sort from newest
+alias lls="eza -lg -s size -h -o"                                    # sort from largest
+alias tree="eza -lgT --git --group-directories-first"                # "ls -l" tree; limit with "-L<n>"
+alias treed="eza -DT"                                                # should almost always be used with "-L<n>"
+alias trees="eza -lDT -rs size --total-size --no-permissions --no-user --no-time -L1"
+                                                                     # additional "-L<n>" adds greater depth
+
 function vpn-up() {
   # three lines expected in ~/.ku_vpn with username, password, vpn.ku.dk
   VPN_FILE=${HOME}/.ku_vpn
