@@ -51,6 +51,8 @@ function vpn-down() {
 export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\] \[\e[m\] \n\\$ "
 
 if [[ -f /.dockerenv ]]; then
-    PS1="[CONTAINER] $PS1"
+    export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\] \[\e[m\] \n[CONTAINER] \\$ "
+else
+    export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\] \[\e[m\] \n\\$ "
 fi
 
