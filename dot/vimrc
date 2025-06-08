@@ -14,13 +14,6 @@ filetype indent on
 set autoread
 au FocusGained,BufEnter * silent! checktime
 
-nnoremap <leader>r :source $MYVIMRC<cr>
-inoremap <leader>r <Esc>:source $MYVIMRC<cr>
-vnoremap <leader>r <Esc>:source $MYVIMRC<cr>
-
-" fast saving
-nmap <leader>w :w!<cr>
-
 " :W sudo saves the file
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
@@ -68,12 +61,6 @@ set novisualbell
 set t_vb=
 set tm=500
 
-" properly disable sound on errors on MacVim
-if has("gui_macvim")
-    autocmd GUIEnter * set vb t_vb=
-    set guifont=Menlo:h13
-endif
-
 " set regular expression engine automatically
 set regexpengine=0
 
@@ -97,13 +84,6 @@ vnoremap <leader>n :set <esc>number! relativenumber!<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 syntax enable
-
-" set extra options when running in GUI mode
-if has("gui_running")
-    set t_Co=256
-    set guitablabel=%M\ %t
-    let macvim_skip_colorscheme=1
-endif
 
 highlight colorcolumn ctermbg=lightgrey guibg=lightgrey
 highlight FoldColumn ctermbg=NONE guibg=NONE
@@ -169,7 +149,7 @@ map <leader>h :bprevious<cr>
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
+map <leader>tm :tabmove 
 map <leader>t<leader> :tabnext<cr>
 
 " toggle between this and the last accessed tab
@@ -188,19 +168,13 @@ set switchbuf=useopen,usetab,newtab
 " always show tabline
 set stal=2
 
-" return to last edit position when opening files (You want this!)
+" return to last edit position when opening files
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Editing shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
-
-" move a line of text using ALT+[jk] or Command+[jk] on mac
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 if has("mac") || has("macunix")
   nmap <D-j> <M-j>
@@ -213,7 +187,6 @@ endif
 map <leader>pp :setlocal paste!<cr>
 
 set showmode
-
 
 " delete trailing white space on save
 fun! CleanExtraSpaces()
@@ -286,6 +259,4 @@ endfunction
 " Other
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:gitgutter_enabled = 1
-map <leader>g :GitGutterToggle<cr>
 

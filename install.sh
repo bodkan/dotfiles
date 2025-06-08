@@ -34,15 +34,3 @@ if [[ -f $HOME/.Renviron ]]; then
     echo GITHUB_PAT=$GITHUB_PAT >> $HOME/.Renviron
 fi
 
-# install vim plugins
-
-mkdir -p ~/.vim/pack/tpope/start
-cd ~/.vim/pack/tpope/start
-git clone https://tpope.io/vim/surround.git
-vim -u NONE -c "helptags surround/doc" -c q
-
-mkdir -p ~/.vim/pack/airblade/start
-cd ~/.vim/pack/airblade/start
-git clone https://github.com/airblade/vim-gitgutter.git
-vim -u NONE -c "helptags vim-gitgutter/doc" -c q
-
