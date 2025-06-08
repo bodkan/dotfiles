@@ -2,7 +2,7 @@
 " General settings
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-let mapleader=","
+let mapleader=" "
 
 " how many lines of history VIM has to remember
 set history=500
@@ -84,9 +84,6 @@ vnoremap <leader>n :set <esc>number! relativenumber!<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 syntax enable
-
-highlight colorcolumn ctermbg=lightgrey guibg=lightgrey
-highlight FoldColumn ctermbg=NONE guibg=NONE
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Files
