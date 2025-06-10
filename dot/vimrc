@@ -12,18 +12,17 @@ filetype indent on
 
 " auto read when a file is changed from the outside
 set autoread
-au FocusGained,BufEnter * silent! checktime
+autocmd FocusGained,BufEnter * silent! checktime
 
 " :W sudo saves the file
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 " number of lines to the cursor when moving vertically using j/k
-set so=10
+set scrolloff=5
 
 set number relativenumber
 
 set wildmenu
-
 set wildignore=*.o,*~,*.pyc
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 
@@ -40,7 +39,6 @@ set whichwrap+=<,>,h,l
 
 set ignorecase
 set smartcase
-set hlsearch
 set incsearch
 
 " for regular expressions turn magic on
@@ -53,19 +51,20 @@ set showmatch
 set showcmd
 
 " how many tenths of a second to blink when matching brackets
-set mat=2
+set matchtime=2
 
 " no annoying sound on errors
 set noerrorbells
 set novisualbell
 set t_vb=
-set tm=500
 
-" set regular expression engine automatically
-set regexpengine=0
+" how long to wait for further keys
+set timeoutlen=500
 
-" set utf8 as standard encoding and en_US as the standard language
+" encoding displayed
 set encoding=utf8
+" encoding written
+set fileencoding=utf-8
 
 " use Unix as the standard file type
 set ffs=unix,dos,mac
@@ -73,11 +72,18 @@ set ffs=unix,dos,mac
 " always show the status line
 set laststatus=2
 
+set showmode
+
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ \ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 nnoremap <leader>n :set number! relativenumber!<cr>
 inoremap <leader>n :set <esc>number! relativenumber!<cr>
 vnoremap <leader>n :set <esc>number! relativenumber!<cr>
+
+nnoremap <leader>h :set hlsearch!<cr>
+inoremap <leader>h :set hlsearch!<cr>
+vnoremap <leader>h :set hlsearch!<cr>
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Colors and fonts
@@ -90,8 +96,9 @@ syntax enable
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 set nobackup
-set nowb
 set noswapfile
+" no write backup
+set nowb 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Tabs and indentation
@@ -108,7 +115,7 @@ set shiftwidth=4
 set tabstop=4
 
 " break lines at word boundaries
-set lbr
+set linebreak
 
 set autoindent
 set smartindent
@@ -124,7 +131,7 @@ vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
-" Movement
+" Windows, buffers, tabs
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 " fast jumping between windows
@@ -134,9 +141,9 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " close the current buffer
-map <leader>bd :Bclose<cr>:tabclose<cr>gT
+map <leader>bd :Bclose<cr>
 
-" close all the buffers
+" close all other buffers
 map <leader>ba :bufdo bd<cr>
 
 " jumping between buffers
@@ -144,19 +151,14 @@ map <leader>] :bnext<cr>
 map <leader>[ :bprevious<cr>
 
 " managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext<cr>
+map <leader>tc :tabnew<cr>   " new tab
+map <leader>tx :tabclose<cr> " close tab
+map <leader>ta :tabonly<cr>  " close all other tabs
 
 " toggle between this and the last accessed tab
 let g:lasttab = 1
-nmap <leader>tl :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
-
-" open a new tab with the current buffer's path
-map <leader>te :tabedit <C-r>=escape(expand("%:p:h"), " ")<cr>/
+map <leader>tt :exe "tabn ".g:lasttab<CR>
+autocmd TabLeave * let g:lasttab = tabpagenr()
 
 " switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
@@ -164,10 +166,10 @@ map <leader>cd :cd %:p:h<cr>:pwd<cr>
 " if a buffer is already open in another window/tab, switch to it
 set switchbuf=useopen,usetab,newtab
 " always show tabline
-set stal=2
+set showtabline=2
 
 " return to last edit position when opening files
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -184,9 +186,13 @@ endif
 " toggle paste mode on and off (prevent broken indentation etc.)
 map <leader>pp :setlocal paste!<cr>
 
-set showmode
+autocmd BufWritePre *.txt,*.R,*.py,*.md,*.Rmd,*.sh :call CleanExtraSpaces()
 
-" delete trailing white space on save
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Helper functions
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Delete trailing white space on save
 fun! CleanExtraSpaces()
     let save_cursor = getpos(".")
     let old_query = getreg('/')
@@ -194,14 +200,6 @@ fun! CleanExtraSpaces()
     call setpos('.', save_cursor)
     call setreg('/', old_query)
 endfun
-
-if has("autocmd")
-    autocmd BufWritePre *.txt,*.R,*.py,*.md,*.Rmd,*.sh :call CleanExtraSpaces()
-endif
-
-""""""""""""""""""""""""""""""""""""""""""""""""""
-" Helper functions
-""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Return true if paste mode is enabled
 function! HasPaste()
