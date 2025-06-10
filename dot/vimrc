@@ -4,7 +4,6 @@
 
 let mapleader=" "
 
-" how many lines of history VIM has to remember
 set history=500
 
 filetype plugin on
@@ -14,7 +13,7 @@ filetype indent on
 set autoread
 autocmd FocusGained,BufEnter * silent! checktime
 
-" :W sudo saves the file
+" :W is a sudo save
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 " number of lines to the cursor when moving vertically using j/k
@@ -135,34 +134,36 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " Windows, buffers, tabs
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-map <leader>bb :ls<cr>:b<space>
+nnoremap <leader>bb :ls<cr>:b<space>
 
 " close the current buffer
-map <leader>bd :Bclose<cr>
+nnoremap <leader>bd :Bclose<cr>
 
 " close all other buffers
-map <leader>ba :bufdo bd<cr>
+nnoremap <leader>ba :bufdo bd<cr>
 
 " jumping between buffers
-map <leader>b] :bnext<cr>
-map <leader>b[ :bprevious<cr>
+nnoremap <leader>b] :bnext<cr>
+nnoremap <leader>b[ :bprevious<cr>
+nnoremap <leader>B[ :blast<cr>
+nnoremap <leader>B] :bfirst<cr>
 
 " managing tabs
-map <leader>tc :tabnew<cr>   " new tab
-map <leader>tx :tabclose<cr> " close tab
-map <leader>ta :tabonly<cr>  " close all other tabs
+nnoremap <leader>tc :tabnew<cr>   " new tab
+nnoremap <leader>tx :tabclose<cr> " close tab
+nnoremap <leader>ta :tabonly<cr>  " close all other tabs
 
 " jumping between tabs
-map <leader>t] :tabnext<cr>
-map <leader>t[ :tabprevious<cr>
+nnoremap <leader>t] :tabnext<cr>
+nnoremap <leader>t[ :tabprevious<cr>
 
 " toggle between this and the last accessed tab
 let g:lasttab = 1
-map <leader>tt :exe "tabn ".g:lasttab<CR>
+nnoremap <leader>tt :exe "tabn ".g:lasttab<CR>
 autocmd TabLeave * let g:lasttab = tabpagenr()
 
 " switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+nnoremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " if a buffer is already open in another window/tab, switch to it
 set switchbuf=useopen,usetab,newtab
@@ -185,7 +186,7 @@ if has("mac") || has("macunix")
 endif
 
 " toggle paste mode on and off (prevent broken indentation etc.)
-map <leader>pp :setlocal paste!<cr>
+nnoremap <leader>pp :setlocal paste!<cr>
 
 autocmd BufWritePre *.txt,*.R,*.py,*.md,*.Rmd,*.sh :call CleanExtraSpaces()
 
