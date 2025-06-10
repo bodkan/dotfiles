@@ -23,6 +23,7 @@ set scrolloff=5
 set number relativenumber
 
 set wildmenu
+set wildmode=list:longest
 set wildignore=*.o,*~,*.pyc
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 
