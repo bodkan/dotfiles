@@ -135,6 +135,8 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " Windows, buffers, tabs
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
+map <leader>bb :ls<cr>:b<space>
+
 " close the current buffer
 map <leader>bd :Bclose<cr>
 
@@ -142,13 +144,17 @@ map <leader>bd :Bclose<cr>
 map <leader>ba :bufdo bd<cr>
 
 " jumping between buffers
-map <leader>] :bnext<cr>
-map <leader>[ :bprevious<cr>
+map <leader>b] :bnext<cr>
+map <leader>b[ :bprevious<cr>
 
 " managing tabs
 map <leader>tc :tabnew<cr>   " new tab
 map <leader>tx :tabclose<cr> " close tab
 map <leader>ta :tabonly<cr>  " close all other tabs
+
+" jumping between tabs
+map <leader>t] :tabnext<cr>
+map <leader>t[ :tabprevious<cr>
 
 " toggle between this and the last accessed tab
 let g:lasttab = 1
