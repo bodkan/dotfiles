@@ -6,15 +6,13 @@ let mapleader=" "
 
 set history=500
 
+syntax enable
 filetype plugin on
 filetype indent on
 
 " auto read when a file is changed from the outside
 set autoread
 autocmd FocusGained,BufEnter * silent! checktime
-
-" :W is a sudo save
-command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 " number of lines to the cursor when moving vertically using j/k
 set scrolloff=5
@@ -76,29 +74,35 @@ set showmode
 
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ \ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
+set nobackup
+set nowritebackup
+set noswapfile
+
+set wrap
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Custom commands and shortcuts
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" :W is a sudo save
+command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+
 nnoremap <leader>n :set number! relativenumber!<cr>
-inoremap <leader>n :set <esc>number! relativenumber!<cr>
-vnoremap <leader>n :set <esc>number! relativenumber!<cr>
 
 nnoremap <leader>h :set hlsearch!<cr>
-inoremap <leader>h :set hlsearch!<cr>
-vnoremap <leader>h :set hlsearch!<cr>
 
+" pressing * or # searches for the current visual selection
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<cr>/<C-R>=@/<cr><cr>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<cr>?<C-R>=@/<cr><cr>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""
-" Colors and fonts
-""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <C-a> 0
+nnoremap <C-e> $
+inoremap <C-a> <C-o>0
+inoremap <C-e> <C-o>$
 
-syntax enable
+nnoremap <bs> <c-^>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""
-" Files
-""""""""""""""""""""""""""""""""""""""""""""""""""
-
-set nobackup
-set noswapfile
-" no write backup
-set nowb 
+nnoremap <leader>re :Rexplore<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Tabs and indentation
@@ -120,21 +124,18 @@ set linebreak
 set autoindent
 set smartindent
 
-set wrap
-
-""""""""""""""""""""""""""""""""""""""""""""""""""
-" Visual mode
-""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" pressing * or # searches for the current visual selection
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+" return to last edit position when opening files
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Windows, buffers, tabs
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
+" quick jump to a buffer
 nnoremap <leader>bb :ls<cr>:b<space>
+
+" quick jump to a buffer
+nnoremap <leader>bo :browse oldfiles<cr>
 
 " close the current buffer
 nnoremap <leader>bd :Bclose<cr>
@@ -142,36 +143,31 @@ nnoremap <leader>bd :Bclose<cr>
 " close all other buffers
 nnoremap <leader>ba :bufdo bd<cr>
 
-" jumping between buffers
-nnoremap <leader>b] :bnext<cr>
-nnoremap <leader>b[ :bprevious<cr>
-nnoremap <leader>B[ :blast<cr>
-nnoremap <leader>B] :bfirst<cr>
+" moving between buffers
+nnoremap <leader>]b :bnext<cr>
+nnoremap <leader>[b :bprevious<cr>
+nnoremap <leader>[B :blast<cr>
+nnoremap <leader>]B :bfirst<cr>
 
 " managing tabs
-nnoremap <leader>tc :tabnew<cr>   " new tab
-nnoremap <leader>tx :tabclose<cr> " close tab
-nnoremap <leader>ta :tabonly<cr>  " close all other tabs
+nnoremap <leader>te :tabedit<space>
+nnoremap <leader>tc :tabnew<cr>
+nnoremap <leader>tx :tabclose<cr>
+nnoremap <leader>ta :tabonly<cr>
 
-" jumping between tabs
-nnoremap <leader>t] :tabnext<cr>
-nnoremap <leader>t[ :tabprevious<cr>
+" moving between tabs
+nnoremap <leader>]t :tabnext<cr>
+nnoremap <leader>[t :tabprevious<cr>
 
-" toggle between this and the last accessed tab
+" toggle between the current and the last accessed tab
 let g:lasttab = 1
-nnoremap <leader>tt :exe "tabn ".g:lasttab<CR>
+nnoremap <leader>tt :exe "tabn ".g:lasttab<cr>
 autocmd TabLeave * let g:lasttab = tabpagenr()
-
-" switch CWD to the directory of the open buffer
-nnoremap <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " if a buffer is already open in another window/tab, switch to it
 set switchbuf=useopen,usetab,newtab
 " always show tabline
 set showtabline=2
-
-" return to last edit position when opening files
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
