@@ -38,6 +38,7 @@ set whichwrap+=<,>,h,l
 set ignorecase
 set smartcase
 set incsearch
+set hlsearch
 
 " for regular expressions turn magic on
 set magic
