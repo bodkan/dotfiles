@@ -1,0 +1,8 @@
+--recurse=yes
+--exclude=.git
+--exclude=*.js
+--exclude=*.html
+--exclude=\*.swp
+--exclude=\*.bak
+--exclude=\*.pyc
+--exclude=\*.class
