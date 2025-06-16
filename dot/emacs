@@ -1,0 +1,309 @@
+(setq user-full-name "Martin Petr"
+      user-mail-address "mp@bodkan.net")
+
+(setq temporary-file-directory "/tmp")
+
+(require 'server)
+(unless (server-running-p)
+    (server-start))
+
+;;
+;; Setup package management
+;;
+
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile (require 'use-package))
+
+(setq use-package-always-ensure t)
+
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
+
+;;
+;; Install and configure required packages
+;;
+
+(use-package zoom-window
+  :bind ("M-z" . zoom-window-zoom))
+
+(use-package windmove
+  :config
+  ;; wrap around at edges
+  (setq windmove-wrap-around t)
+  :bind
+  ("M-h" . windmove-left)
+  ("M-l" . windmove-right)
+  ("M-k" . windmove-up)
+  ("M-j" . windmove-down))
+
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "LANG"))
+
+(use-package which-key
+  :init
+  (which-key-mode))
+
+;; Colours for dired listings
+(use-package diredfl
+  :init
+  (diredfl-global-mode))
+
+(use-package magit
+  :demand
+  :config
+  (setq magit-refresh-status-buffer nil)
+  (remove-hook 'server-switch-hook 'magit-commit-diff)
+  :bind
+  ("C-x g" . magit-status))
+
+(use-package vterm)
+(use-package vterm-toggle
+  :bind
+  ("s-t" . vterm-toggle)
+  (:map vterm-mode-map (("s-n" . vterm-toggle-forward)
+                        ("s-p" . vterm-toggle-forward))))
+
+(use-package avy
+  :bind
+  ("C-." . avy-goto-char-2)
+  ("M-g g" . avy-goto-line))
+
+(use-package ace-window
+  :init
+  (setq aw-keys '(?q ?w ?e ?r ?a ?s ?d ?f))
+  (setq aw-background nil)
+  :config
+  (setq aw-scope 'frame)
+  (custom-set-faces
+   '(aw-leading-char-face
+     ((t (:inherit ace-jump-face-foreground :height 5.0 :foreground "red")))))
+
+  (defun mp/aw-previous-window ()
+    "Toggle between the last two selected windows."
+    (interactive)
+    (let ((win (get-mru-window 'frame t t)))
+      (unless win (error "Last window not found"))
+      (aw-switch-to-window win)))
+  
+  :bind
+  ("C-'" . ace-window))
+
+(use-package fireplace)
+
+(use-package dired
+  :ensure f
+  :config
+  (setq dired-use-ls-dired t)
+  (setq dired-listing-switches "-alh --group-directories-first")
+
+  (defun mp/dired-find-file (&optional prefix)
+    "Open file with either operating system defaults or within Emacs."
+    (interactive "P")
+    (if prefix
+        (dired-find-fie)
+        (org-open-file (dired-get-file-for-visit) 'system)))
+  :bind
+  (:map dired-mode-map ("r" . mp/dired-find-file))
+  (:map dired-mode-map ("." . dired-omit-mode))
+
+  :hook
+  (dired-mode . (lambda () (dired-omit-mode))))
+
+;;
+;; General setup
+;;
+
+(setq backup-directory-alist `(("." . "~/.saves")))
+
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
+
+(pixel-scroll-mode 1)
+
+(setq visible-bell 1)
+
+(setq use-dialog-box nil)
+
+(setq kill-whole-line t)
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(winner-mode 1)
+
+(setq mac-option-modifier 'super)
+(setq mac-command-modifier 'meta)
+(setq mac-pass-command-to-system nil)
+
+(delete-selection-mode 1)
+(global-auto-revert-mode t)
+
+(add-hook 'text-mode-hook #'visual-line-mode)
+
+(setq-default indent-tabs-mode nil)
+
+(setq vc-follow-symlinks t)
+
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+(setq comint-scroll-to-bottom-on-input t)
+(setq comint-scroll-to-bottom-on-output t)
+(setq comint-move-point-for-output nil)
+
+;; automatically switch to the next buffer in a new split
+(defun mp/vsplit-last-buffer ()
+  (interactive)
+  (split-window-vertically)
+  (other-window 1 nil)
+  (if (equal current-prefix-arg nil)
+      (switch-to-next-buffer)))
+(defun mp/hsplit-last-buffer ()
+  (interactive)
+  (split-window-horizontally)
+  (other-window 1 nil)
+  (if (equal current-prefix-arg nil)
+      (switch-to-next-buffer)))
+(global-set-key (kbd "C-x 2") 'mp/vsplit-last-buffer)
+(global-set-key (kbd "C-x 3") 'mp/hsplit-last-buffer)
+
+;; don't prompt for which buffer to kill - kill the current one
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "M-[") 'previous-buffer)
+(global-set-key (kbd "M-]") 'next-buffer)
+
+(global-set-key (kbd "M-`") 'other-frame)
+
+(global-set-key (kbd "C-x d") 'dired)
+
+(mouse-avoidance-mode 'none)
+
+(global-set-key (kbd "M-<left>") 'shrink-window-horizontally)
+(global-set-key (kbd "M-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "M-<down>") 'shrink-window)
+(global-set-key (kbd "M-<up>") 'enlarge-window)
+
+(defun mp/comment-or-uncomment-region-or-line ()
+    "Comments or uncomments the region or the current line if
+there's no active region."
+    (interactive)
+    (let (beg end)
+        (if (region-active-p)
+            (setq beg (region-beginning) end (region-end))
+            (setq beg (line-beginning-position) end (line-end-position)))
+        (comment-or-uncomment-region beg end)
+        (next-line)))
+(global-set-key (kbd "M-;") 'mp/comment-or-uncomment-region-or-line)
+
+(defun mp/toggle-theme ()
+  (interactive)
+  (if (eq (car custom-enabled-themes) 'solarized-dark)
+      (load-theme 'solarized-light t)
+    (load-theme 'solarized-dark t)))
+
+(setq explicit-shell-file-name "bash")
+
+(setq vc-handled-backends nil)
+
+(add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
+
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+
+(column-number-mode t)
+
+(setq custom-file "~/.emacs.d/emacs-custom")
+(if (file-exists-p custom-file)
+    (load custom-file))
+
+(if (display-graphic-p)
+    (progn (toggle-frame-maximized)
+           (menu-bar-mode -1)))
+
+;; ;;; https://github.com/howardabrams/dot-files/blob/master/emacs-eshell.org#shell-favorites
+
+;; (require 'subr-x)
+
+;; (defvar mp/remote-shell-fav-hosts (make-hash-table :test 'equal)
+;;   "Table of host aliases for IPs or other actual references.")
+
+;; (defun mp/remote-shell-fav-hosts-map ()
+;;   "Returns the mapping between our simple names of our favorite
+;; hosts and their IP address. If the map is empty, and the function
+;; `mp/remote-shell-fav-hosts-get' has been defined, it calls that
+;; function to populate the map prior to returning it. This may
+;; return an empty map."
+;;   (when (and #'mp/remote-shell-fav-hosts-get
+;;              (hash-table-empty-p mp/remote-shell-fav-hosts))
+;;     (mp/remote-shell-fav-hosts-get))
+;;   mp/remote-shell-fav-hosts)
+
+;; (defun mp/remote-shell-fav-hosts-list ()
+;;   "Simply returns a list of known hosts from the cached map, or
+;; populates it first if it is empty and the
+;; `mp/remote-shell-fav-hosts-get' function has been defined."
+;;   (hash-table-keys (mp/remote-shell-fav-hosts-map)))
+
+;; (defun mp/remote-shell-tramp-connection (hostname &optional root directory)
+;;   "Return a TRAMP connection string to HOSTNAME. If ROOT is
+;; non-nil, returns an sudo compatible string."
+;;   (when (null directory)
+;;     (setq directory ""))
+;;   ;; The ip address is either the value from a key in our cache, or whatever we pass in:
+;;   (let ((ipaddr (gethash hostname (mp/remote-shell-fav-hosts-map) hostname)))
+;;     (if root
+;;         (format "/ssh:%s|sudo:%s:%s" ipaddr ipaddr directory)
+;;       (format "/ssh:%s:%s"         ipaddr directory))))
+
+;; (defun mp/remote-shell-fav-hosts-get ()
+;;   "My hook to the mp/remote-shell processes in order to connect to
+;;     my OpenStack controller, and create a hashtable of host names as
+;;     the keys, and IP addresses as the values."
+;;   (clrhash mp/remote-shell-fav-hosts)
+;;   ;; iterate over numbers of available number crunchers and populate
+;;   ;; the hash of server names/addresses
+;;   (dolist (nr '(1 2 3 4 5 6 7))
+;;     (let ((server (concat "racimocomp" (format "%02d" nr) "fl")))
+;;       (puthash server server mp/remote-shell-fav-hosts))))
+
+;; (defun mp/remote-shell (hostname &optional root)
+;;   "Start an shell experience on HOSTNAME, that can be an alias to
+;; a virtual machine from my 'cloud' server. With prefix command, opens
+;; the shell as the root user account."
+;;   (interactive
+;;    (list (if (fboundp #'ido-completing-read)
+;;              (ido-completing-read "Hostname: " (mp/remote-shell-fav-hosts-list))
+;;            (completing-read "Hostname: " (mp/remote-shell-fav-hosts-list)))))
+;;   (vterm)
+;;   (vterm-send-string (concat "ssh " hostname))
+;;   (vterm-send-return)
+;;   (vterm-send-string "ts") ;; attach to a default tmux session
+;;   (vterm-send-return)
+;;   (rename-buffer (concat "*vterm-" hostname "*")))
+
+;; (defun mp/remote-shell-command (hostname command
+;;                                          &optional root bufname directory)
+;;   "On HOSTNAME, run COMMAND (if the command ends with &, run
+;; asynchronously). With a `C-u' prefix, run the command as ROOT.
+;; When non-interactive, you can specify BUFNAME for the buffer's
+;; name, and DIRECTORY where the command should run."
+;;   (interactive
+;;    (list (if #'completing-read
+;;              (completing-read "Hostname: " (mp/remote-shell-fav-hosts-list))
+;;            (completing-read "Hostname: " (mp/remote-shell-fav-hosts-list)))
+;;          (read-string "Command: ")))
+;;   (when (equal current-prefix-arg '(4))
+;;     (setq root t))
+;;   (let ((default-directory (mp/remote-shell-tramp-connection hostname root directory)))
+;;     (shell-command command (mp/remote-shell-buffer-name hostname command bufname))))
+
