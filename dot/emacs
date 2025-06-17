@@ -101,6 +101,12 @@
 
 (use-package fireplace)
 
+(use-package projectile
+  :custom (projectile-project-search-path '("~/Projects" "~/Code"))
+  :bind-keymap (("C-c C-p" . projectile-command-map)
+                ("C-c p" . projectile-command-map))
+  :hook (after-init . projectile-mode))
+
 (use-package dired
   :ensure f
   :config
