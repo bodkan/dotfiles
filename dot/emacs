@@ -120,11 +120,7 @@
         (dired-find-fie)
         (org-open-file (dired-get-file-for-visit) 'system)))
   :bind
-  (:map dired-mode-map ("r" . mp/dired-find-file))
-  (:map dired-mode-map ("." . dired-omit-mode))
-
-  :hook
-  (dired-mode . (lambda () (dired-omit-mode))))
+  (:map dired-mode-map ("r" . mp/dired-find-file)))
 
 (use-package pdf-tools
   :defer t
