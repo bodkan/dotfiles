@@ -171,6 +171,8 @@
 
 (setq vc-follow-symlinks t)
 
+(setq confirm-kill-processes nil)
+
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (setq comint-scroll-to-bottom-on-input t)
@@ -317,4 +319,3 @@ name, and DIRECTORY where the command should run."
     (setq root t))
   (let ((default-directory (mp/remote-shell-tramp-connection hostname root directory)))
     (shell-command command (mp/remote-shell-buffer-name hostname command bufname))))
-
