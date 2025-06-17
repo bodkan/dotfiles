@@ -264,17 +264,6 @@ populates it first if it is empty and the
 `mp/remote-shell-fav-hosts-get' function has been defined."
   (hash-table-keys (mp/remote-shell-fav-hosts-map)))
 
-(defun mp/remote-shell-tramp-connection (hostname &optional root directory)
-  "Return a TRAMP connection string to HOSTNAME. If ROOT is
-non-nil, returns an sudo compatible string."
-  (when (null directory)
-    (setq directory ""))
-  ;; The ip address is either the value from a key in our cache, or whatever we pass in:
-  (let ((ipaddr (gethash hostname (mp/remote-shell-fav-hosts-map) hostname)))
-    (if root
-        (format "/ssh:%s|sudo:%s:%s" ipaddr ipaddr directory)
-      (format "/ssh:%s:%s"         ipaddr directory))))
-
 (defun mp/remote-shell-fav-hosts-get ()
   "My hook to the mp/remote-shell processes in order to connect to
     my OpenStack controller, and create a hashtable of host names as
@@ -285,6 +274,17 @@ non-nil, returns an sudo compatible string."
   (dolist (nr '(1 2 3 4 5 6 7))
     (let ((server (concat "racimocomp" (format "%02d" nr) "fl")))
       (puthash server server mp/remote-shell-fav-hosts))))
+
+(defun mp/remote-shell-tramp-connection (hostname &optional root directory)
+  "Return a TRAMP connection string to HOSTNAME. If ROOT is
+non-nil, returns an sudo compatible string."
+  (when (null directory)
+    (setq directory ""))
+  ;; The ip address is either the value from a key in our cache, or whatever we pass in:
+  (let ((ipaddr (gethash hostname (mp/remote-shell-fav-hosts-map) hostname)))
+    (if root
+        (format "/ssh:%s|sudo:%s:%s" ipaddr ipaddr directory)
+      (format "/ssh:%s:%s"         ipaddr directory))))
 
 (defun mp/remote-shell (hostname &optional root)
   "Start an shell experience on HOSTNAME, that can be an alias to
@@ -297,11 +297,11 @@ the shell as the root user account."
   (vterm)
   (vterm-send-string (concat "ssh " hostname))
   (vterm-send-return)
-  (vterm-send-string "ts") ;; attach to a default tmux session
-  (vterm-send-return)
+  ;; (vterm-send-string "ts") ;; attach to a default tmux session
+  ;; (vterm-send-return)
   (rename-buffer (concat "*vterm-" hostname "*")))
 
-(defun mp/remote-shell-command (hostname command &optional root bufname directory)
+(defun mp/remote-run-command (hostname command &optional root bufname directory)
   "On HOSTNAME, run COMMAND (if the command ends with &, run
 asynchronously). With a `C-u' prefix, run the command as ROOT.
 When non-interactive, you can specify BUFNAME for the buffer's
