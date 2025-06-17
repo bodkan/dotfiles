@@ -223,11 +223,7 @@ there's no active region."
         (next-line)))
 (global-set-key (kbd "M-;") 'mp/comment-or-uncomment-region-or-line)
 
-(defun mp/toggle-theme ()
-  (interactive)
-  (if (eq (car custom-enabled-themes) 'solarized-dark)
-      (load-theme 'solarized-light t)
-    (load-theme 'solarized-dark t)))
+(load-theme 'modus-operandi)
 
 (setq explicit-shell-file-name "bash")
 
