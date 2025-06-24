@@ -109,6 +109,8 @@ nnoremap <bs> <c-^>
 
 nnoremap <leader>re :Rexplore<cr>
 
+nnoremap <leader>w :set wrap!<cr>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Tabs and indentation
 """"""""""""""""""""""""""""""""""""""""""""""""""
