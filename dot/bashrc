@@ -41,7 +41,7 @@ function vpn-up() {
   USERNAME="${lines[0]}"
   PASSWORD="${lines[1]}"
   VPN_SERVER="${lines[2]}"
-  echo $PASSWORD | sudo openconnect -v --background --passwd-on-stdin --user=$USERNAME $VPN_SERVER
+  echo $PASSWORD | sudo openconnect --background --passwd-on-stdin --user=$USERNAME $VPN_SERVER
 }
 
 function vpn-down() {
