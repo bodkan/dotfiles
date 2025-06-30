@@ -19,7 +19,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
     [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
     export DOCKER_HOST=$(limactl list docker --format 'unix://{{.Dir}}/sock/docker.sock')
-    export XDG_CACHE_HOME="${HOME}/Library/Caches
+    export XDG_CACHE_HOME="${HOME}/Library/Caches"
 else
     export PATH="$HOME/bin:$PATH"
     export DOCKER_HOST=unix:///run/user/243674353/docker.sock
