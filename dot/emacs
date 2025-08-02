@@ -52,17 +52,20 @@
   (which-key-mode))
 
 (use-package magit
-  :demand
-  :config
-  (setq magit-refresh-status-buffer nil)
-  (remove-hook 'server-switch-hook 'magit-commit-diff)
   :bind
   ("C-x g" . magit-status))
 
-(use-package avy
+(use-package vterm)
+(use-package vterm-toggle
+  :bind
+  ("s-t" . vterm-toggle)
+  (:map vterm-mode-map (("s-n" . vterm-toggle-forward)
+                        ("s-p" . vterm-toggle-forward))))
+
+  (use-package avy
   :bind
   ("C-." . avy-goto-char-2)
-  ("M-g g" . avy-goto-line))
+  ("C-M-." . avy-goto-line))
 
 (use-package ace-window
   :init
@@ -72,7 +75,7 @@
   (setq aw-scope 'frame)
   (custom-set-faces
    '(aw-leading-char-face
-     ((t (:inherit ace-jump-face-foreground :height 5.0 :foreground "red")))))
+     ((t (:inherit ace-jump-face-foreground :height 5.0 :foreground "green")))))
 
   (defun mp/aw-previous-window ()
     "Toggle between the last two selected windows."
@@ -107,20 +110,6 @@
   :bind
   (:map dired-mode-map ("r" . mp/dired-find-file)))
 
-(use-package pdf-tools
-  :defer t
-  :magic ("%PDF" . pdf-view-mode) ;; ensure DocView is not used
-  :config
-  (pdf-tools-install :no-query)
-  (setq-default pdf-view-display-size 'fit-width)
-  (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-  :custom
-  (pdf-annot-activate-created-annotations t "automatically annotate highlights"))
-
-(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-      TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-      TeX-source-correlate-start-server t)
-
 ;;
 ;; General setup
 ;;
@@ -129,7 +118,7 @@
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(menu-bar-mode -1)
+(menu-bar-mode t)
 
 (pixel-scroll-mode 1)
 
@@ -142,6 +131,8 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (winner-mode 1)
+
+(setq display-line-numbers 'relative)
 
 (setq mac-option-modifier 'super)
 (setq mac-command-modifier 'meta)
@@ -216,8 +207,6 @@ there's no active region."
 (setq vc-handled-backends nil)
 
 (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
-
-(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
 (column-number-mode t)
 
