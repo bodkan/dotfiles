@@ -24,12 +24,15 @@
 
 (setq use-package-always-ensure t)
 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-
-
 ;;
 ;; Install and configure required packages
 ;;
+
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "LANG"))
 
 (use-package zoom-window
   :bind ("M-z" . zoom-window-zoom))
@@ -44,20 +47,9 @@
   ("M-k" . windmove-up)
   ("M-j" . windmove-down))
 
-(use-package exec-path-from-shell
-  :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-env "LANG"))
-
 (use-package which-key
   :init
   (which-key-mode))
-
-;; Colours for dired listings
-(use-package diredfl
-  :init
-  (diredfl-global-mode))
 
 (use-package magit
   :demand
@@ -66,13 +58,6 @@
   (remove-hook 'server-switch-hook 'magit-commit-diff)
   :bind
   ("C-x g" . magit-status))
-
-(use-package vterm)
-(use-package vterm-toggle
-  :bind
-  ("s-t" . vterm-toggle)
-  (:map vterm-mode-map (("s-n" . vterm-toggle-forward)
-                        ("s-p" . vterm-toggle-forward))))
 
 (use-package avy
   :bind

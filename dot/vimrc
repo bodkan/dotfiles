@@ -83,8 +83,6 @@ set wrap
 
 set mouse=a
 
-autocmd BufWritePost *.c,*.h,*.py,*.R,*.cpp,*.hpp silent! !ctags . &
-
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
