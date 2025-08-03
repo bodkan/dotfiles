@@ -54,8 +54,6 @@ set matchtime=2
 
 " no annoying sound on errors
 set noerrorbells
-set novisualbell
-set t_vb=
 
 " how long to wait for further keys
 set timeoutlen=500
@@ -71,8 +69,6 @@ set ffs=unix,dos,mac
 " always show the status line
 set laststatus=2
 
-set showmode
-
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ \ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 set nobackup
@@ -82,6 +78,8 @@ set noswapfile
 set wrap
 
 set mouse=a
+
+set noshowmode
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
@@ -103,8 +101,6 @@ nnoremap <C-e> $
 inoremap <C-a> <C-o>0
 inoremap <C-e> <C-o>$
 
-nnoremap <bs> <c-^>
-
 nnoremap <leader>re :Rexplore<cr>
 
 nnoremap <leader>w :set wrap!<cr>
@@ -119,15 +115,18 @@ set expandtab
 " pressing TAB respects context
 set smarttab
 
-" one TAB is four characters wide
+" one TAB is four characters wide for everything...
 set shiftwidth=4
 set tabstop=4
-
-" break lines at word boundaries
-set linebreak
+set softtabstop=4
+" ... except R files
+autocmd FileType R :setlocal sw=2 ts=2 sts=2 
 
 set autoindent
 set smartindent
+
+" break lines at word boundaries
+set linebreak
 
 " return to last edit position when opening files
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -137,32 +136,31 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 " quick jump to a buffer
-nnoremap <leader>bb :ls<cr>:b<space>
+nnoremap <leader>bl :ls<cr>:b<space>
+
+" quick jump to the previous buffer
+nnoremap <leader>bb <c-^>
 
 " quick jump to a buffer
 nnoremap <leader>bo :browse oldfiles<cr>
 
 " close the current buffer
-nnoremap <leader>bd :Bclose<cr>
-
-" close all other buffers
-nnoremap <leader>ba :bufdo bd<cr>
+nnoremap <leader>bx :bdelete<cr>
 
 " moving between buffers
-nnoremap <leader>]b :bnext<cr>
-nnoremap <leader>[b :bprevious<cr>
-nnoremap <leader>[B :blast<cr>
-nnoremap <leader>]B :bfirst<cr>
+nnoremap <leader>b] :bnext<cr>
+nnoremap <leader>b[ :bprevious<cr>
+nnoremap <leader>B[ :blast<cr>
+nnoremap <leader>B] :bfirst<cr>
 
 " managing tabs
 nnoremap <leader>te :tabedit<space>
 nnoremap <leader>tc :tabnew<cr>
 nnoremap <leader>tx :tabclose<cr>
-nnoremap <leader>ta :tabonly<cr>
 
 " moving between tabs
-nnoremap <leader>]t :tabnext<cr>
-nnoremap <leader>[t :tabprevious<cr>
+nnoremap <leader>t] :tabnext<cr>
+nnoremap <leader>t[ :tabprevious<cr>
 
 " toggle between the current and the last accessed tab
 let g:lasttab = 1
@@ -189,20 +187,9 @@ endif
 " toggle paste mode on and off (prevent broken indentation etc.)
 nnoremap <leader>pp :setlocal paste!<cr>
 
-autocmd BufWritePre *.txt,*.R,*.py,*.md,*.Rmd,*.sh :call CleanExtraSpaces()
-
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Helper functions
 """"""""""""""""""""""""""""""""""""""""""""""""""
-
-" Delete trailing white space on save
-fun! CleanExtraSpaces()
-    let save_cursor = getpos(".")
-    let old_query = getreg('/')
-    silent! %s/\s\+$//e
-    call setpos('.', save_cursor)
-    call setreg('/', old_query)
-endfun
 
 " Return true if paste mode is enabled
 function! HasPaste()
@@ -210,27 +197,6 @@ function! HasPaste()
         return 'PASTE MODE  '
     endif
     return ''
-endfunction
-
-" Do not close window when deleting a buffer
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
-
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
-
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
-
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
 endfunction
 
 function! CmdLine(str)
