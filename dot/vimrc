@@ -20,13 +20,12 @@ set scrolloff=5
 set number relativenumber
 
 set wildmenu
-set wildmode=list:longest
+set wildmode=longest:list,full
 set wildignore=*.o,*~,*.pyc
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 
 set ruler
 
-" height of the command bar
 set cmdheight=1
 
 set hidden
@@ -81,6 +80,8 @@ set mouse=a
 
 set noshowmode
 
+colorscheme quiet
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -104,6 +105,9 @@ inoremap <C-e> <C-o>$
 nnoremap <leader>re :Rexplore<cr>
 
 nnoremap <leader>w :set wrap!<cr>
+
+" toggle paste mode on and off (prevent broken indentation etc.)
+nnoremap <leader>pp :setlocal paste!<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Tabs and indentation
@@ -139,7 +143,7 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 nnoremap <leader>bl :ls<cr>:b<space>
 
 " quick jump to the previous buffer
-nnoremap <leader>bb <c-^>
+nnoremap <leader>bg <c-^>
 
 " quick jump to a buffer
 nnoremap <leader>bo :browse oldfiles<cr>
@@ -164,28 +168,13 @@ nnoremap <leader>t[ :tabprevious<cr>
 
 " toggle between the current and the last accessed tab
 let g:lasttab = 1
-nnoremap <leader>tt :exe "tabn ".g:lasttab<cr>
+nnoremap <leader>tg :exe "tabn ".g:lasttab<cr>
 autocmd TabLeave * let g:lasttab = tabpagenr()
 
 " if a buffer is already open in another window/tab, switch to it
 set switchbuf=useopen,usetab,newtab
 " always show tabline
 set showtabline=2
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""
-" Editing shortcuts
-""""""""""""""""""""""""""""""""""""""""""""""""""
-
-if has("mac") || has("macunix")
-  nmap <D-j> <M-j>
-  nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-k> <M-k>
-endif
-
-" toggle paste mode on and off (prevent broken indentation etc.)
-nnoremap <leader>pp :setlocal paste!<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Helper functions
@@ -199,10 +188,12 @@ function! HasPaste()
     return ''
 endfunction
 
+" Feed a given string to the command line
 function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction
 
+" Select visually the word under cursor
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
     execute "normal! vgvy"
