@@ -109,6 +109,14 @@ nnoremap <leader>re :Rexplore<cr>
 
 nnoremap <leader>w :set wrap!<cr>
 
+" vim-powered terminal in split window
+map <Leader>c :vertical term ++close ++cols=100<cr>
+tmap <Leader>c <c-w>:vertical term ++close ++cols=100<cr>
+
+" vim-powered terminal in new tab
+map <Leader>C :tab term ++close<cr>
+tmap <Leader>C <c-w>:tab term ++close<cr>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Tabs and indentation
 """"""""""""""""""""""""""""""""""""""""""""""""""
