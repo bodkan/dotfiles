@@ -52,7 +52,7 @@ set showcmd
 set matchtime=2
 
 " no annoying sound on errors
-set noerrorbells
+set visualbell
 
 " how long to wait for further keys
 set timeoutlen=500
@@ -110,12 +110,12 @@ nnoremap <leader>re :Rexplore<cr>
 nnoremap <leader>w :set wrap!<cr>
 
 " vim-powered terminal in split window
-map <Leader>c :vertical term ++close ++cols=100<cr>
-tmap <Leader>c <c-w>:vertical term ++close ++cols=100<cr>
+map <Leader>x :vertical term ++close ++cols=100<cr>
+tmap <Leader>x <c-w>:vertical term ++close ++cols=100<cr>
 
 " vim-powered terminal in new tab
-map <Leader>C :tab term ++close<cr>
-tmap <Leader>C <c-w>:tab term ++close<cr>
+map <Leader>X :tab term ++close<cr>
+tmap <Leader>X <c-w>:tab term ++close<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Tabs and indentation
@@ -151,7 +151,7 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 nnoremap <leader>bl :ls<cr>:b<space>
 
 " quick jump to the previous buffer
-nnoremap <leader>bg <c-^>
+nnoremap <leader>bb <c-^>
 
 " quick jump to a buffer
 nnoremap <leader>bo :browse oldfiles<cr>
@@ -160,10 +160,8 @@ nnoremap <leader>bo :browse oldfiles<cr>
 nnoremap <leader>bx :bdelete<cr>
 
 " moving between buffers
-nnoremap <leader>b] :bnext<cr>
-nnoremap <leader>b[ :bprevious<cr>
-nnoremap <leader>B[ :blast<cr>
-nnoremap <leader>B] :bfirst<cr>
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprevious<cr>
 
 " managing tabs
 nnoremap <leader>te :tabedit<space>
@@ -171,12 +169,12 @@ nnoremap <leader>tc :tabnew<cr>
 nnoremap <leader>tx :tabclose<cr>
 
 " moving between tabs
-nnoremap <leader>t] :tabnext<cr>
-nnoremap <leader>t[ :tabprevious<cr>
+nnoremap ]t :tabnext<cr>
+nnoremap [t :tabprevious<cr>
 
 " toggle between the current and the last accessed tab
 let g:lasttab = 1
-nnoremap <leader>tg :exe "tabn ".g:lasttab<cr>
+nnoremap <leader>tt :exe "tabn ".g:lasttab<cr>
 autocmd TabLeave * let g:lasttab = tabpagenr()
 
 " if a buffer is already open in another window/tab, switch to it
@@ -218,4 +216,38 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" LSP config
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+packadd lsp
+
+" R language server
+call LspAddServer([#{
+	\    name: 'Rlsp',
+	\    filetype: ['r', 'rmd'],
+	\    path: '/usr/local/bin/R',
+	\    args: ['--no-echo', '-e', 'languageserver::run()']
+	\  }])
+
+call LspOptionsSet(#{
+    \ outlineOnRight: v:true,
+    \ outlineWinSize: 60
+    \ })
+
+nnoremap <leader>c. :LspGotoDefinition<cr>
+nnoremap <leader>cd :LspPeekDefinition<cr>
+
+nnoremap <leader>cr :LspPeekReferences<cr>
+nnoremap <leader>Cr :LspShowReferences<cr>
+
+nnoremap <leader>Cb :LspDiag show<cr>
+
+nnoremap <leader>cs :LspOutline<cr>
+nnoremap <leader>c/ :LspSymbolSearch <cr>
+
+nnoremap <leader>ch :LspHover<cr>
+
+nnoremap <leader>cx :LspRename<cr>
 
