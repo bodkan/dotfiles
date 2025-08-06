@@ -109,14 +109,6 @@ nnoremap <leader>re :Rexplore<cr>
 
 nnoremap <leader>w :set wrap!<cr>
 
-" vim-powered terminal in split window
-map <Leader>x :vertical term ++close ++cols=100<cr>
-tmap <Leader>x <c-w>:vertical term ++close ++cols=100<cr>
-
-" vim-powered terminal in new tab
-map <Leader>X :tab term ++close<cr>
-tmap <Leader>X <c-w>:tab term ++close<cr>
-
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Tabs and indentation
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -225,29 +217,34 @@ packadd lsp
 
 " R language server
 call LspAddServer([#{
-	\    name: 'Rlsp',
+	\    name: 'R',
 	\    filetype: ['r', 'rmd'],
-	\    path: '/usr/local/bin/R',
+	\    path: 'R',
 	\    args: ['--no-echo', '-e', 'languageserver::run()']
 	\  }])
 
 call LspOptionsSet(#{
+    \ highlightDiagInline: v:false,
     \ outlineOnRight: v:true,
     \ outlineWinSize: 60
     \ })
 
-nnoremap <leader>c. :LspGotoDefinition<cr>
 nnoremap <leader>cd :LspPeekDefinition<cr>
+nnoremap <leader>Cd :LspGotoDefinition<cr>
 
 nnoremap <leader>cr :LspPeekReferences<cr>
 nnoremap <leader>Cr :LspShowReferences<cr>
 
-nnoremap <leader>Cb :LspDiag show<cr>
-
-nnoremap <leader>cs :LspOutline<cr>
-nnoremap <leader>c/ :LspSymbolSearch <cr>
+nnoremap <leader>cs :LspDocumentSymbol <cr>
+nnoremap <leader>Cs :LspOutline<cr>
 
 nnoremap <leader>ch :LspHover<cr>
 
-nnoremap <leader>cx :LspRename<cr>
+nnoremap <leader>cx :LspDiagCurrent<cr>
+nnoremap <leader>Cx :LspDiagShow<cr>
+
+nnoremap ]x :LspDiagNext<cr>
+nnoremap [x :LspDiagPrev<cr>
+nnoremap [X :LspDiagFirst<cr>
+nnoremap ]X :LspDiagLast<cr>
 
