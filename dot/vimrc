@@ -52,7 +52,7 @@ set showcmd
 set matchtime=2
 
 " no annoying sound on errors
-set visualbell
+set noerrorbells
 
 " how long to wait for further keys
 set timeoutlen=500
