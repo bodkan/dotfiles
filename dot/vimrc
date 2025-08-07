@@ -86,6 +86,9 @@ colorscheme quiet
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
+" automatically generate tags file for given filetypes
+autocmd BufWritePost *.py,*.R silent! !ctags . &
+
 " toggle paste mode on and off (prevent broken indentation etc.)
 nnoremap <leader>pp :setlocal paste!<cr>
 
