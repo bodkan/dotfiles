@@ -20,10 +20,12 @@ for f in bin/*; do
     ln -s `realpath $f` $HOME/.my_local/bin/`basename $f`
 done
 
-GITHUB_PAT=$(awk -F= '/GITHUB_PAT/{print $2}' $HOME/.Renviron)
-
 # generate ~/.Renviron file with necessary contents
 echo "Generating contents of $HOME/.Renviron..."
+
+# extract GitHub access token first (if it's even present)
+GITHUB_PAT=$(awk -F= '/GITHUB_PAT/{print $2}' $HOME/.Renviron)
+
 echo "PATH=$PATH" > $HOME/.Renviron
 if [[ "$OSTYPE" == "darwin"* ]]; then
     mkdir -p $HOME/.my_local/R_LIBS
