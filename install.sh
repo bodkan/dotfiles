@@ -17,7 +17,7 @@ done
 
 mkdir -p $HOME/.config/rstudio/keybindings
 ln -sv `realpath config/rstudio/rstudio-prefs.json` $HOME/.config/rstudio/rstudio-prefs.json
-ln -sv `realpath config/rstudio/rstudio_bindings.json` $HOME/.config/rstudio/keybindings/rstudio_bindings.json
+ln -sv `realpath config/rstudio/keybindings/rstudio_bindings.json` $HOME/.config/rstudio/keybindings/rstudio_bindings.json
 
 mkdir -p $HOME/.config/ctags
 ln -sv `realpath config/options.ctags` $HOME/.config/ctags/options.ctags
