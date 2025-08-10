@@ -117,7 +117,7 @@
   :config
   (pdf-tools-install :no-query)
 
-  (setq-default pdf-view-display-size 0.8))
+  (setq-default pdf-view-display-size 'fit-height))
 
 ;;
 ;; General setup
