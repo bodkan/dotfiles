@@ -288,7 +288,7 @@ the shell as the root user account."
   (vterm-send-return)
   ;; (vterm-send-string "ts") ;; attach to a default tmux session
   ;; (vterm-send-return)
-  (rename-buffer (concat "*vterm-" hostname "*")))
+  (rename-buffer (concat "#vterm-" hostname "#")))
 
 (defun mp/remote-run-command (hostname command &optional root bufname directory)
   "On HOSTNAME, run COMMAND (if the command ends with &, run
