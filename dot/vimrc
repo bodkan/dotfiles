@@ -42,16 +42,14 @@ set hlsearch
 " for regular expressions turn magic on
 set magic
 
-" show matching brackets when text indicator is over them
-set showmatch
-
 " show partial commands as they are typed
 set showcmd
+
+set showmatch
 
 " how many tenths of a second to blink when matching brackets
 set matchtime=2
 
-" no annoying sound on errors
 set noerrorbells
 
 " how long to wait for further keys
@@ -103,13 +101,6 @@ nnoremap <leader>h :set hlsearch!<cr>
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<cr>/<C-R>=@/<cr><cr>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<cr>?<C-R>=@/<cr><cr>
 
-nnoremap <C-a> 0
-nnoremap <C-e> $
-inoremap <C-a> <C-o>0
-inoremap <C-e> <C-o>$
-
-nnoremap <leader>re :Rexplore<cr>
-
 nnoremap <leader>w :set wrap!<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -127,7 +118,7 @@ set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 " ... except R files
-autocmd FileType R :setlocal sw=2 ts=2 sts=2 
+autocmd FileType r :setlocal sw=2 ts=2 sts=2 
 
 set autoindent
 set smartindent
@@ -143,7 +134,7 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 " quick jump to a buffer
-nnoremap <leader>bl :ls<cr>:b<space>
+nnoremap <leader><tab> :ls<cr>:b<space>
 
 " quick jump to the previous buffer
 nnoremap <leader>bb <c-^>
@@ -216,38 +207,38 @@ endfunction
 " LSP config
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-packadd lsp
-
-" R language server
-call LspAddServer([#{
-	\    name: 'R',
-	\    filetype: ['r', 'rmd'],
-	\    path: 'R',
-	\    args: ['--no-echo', '-e', 'languageserver::run()']
-	\  }])
-
-call LspOptionsSet(#{
-    \ highlightDiagInline: v:false,
-    \ outlineOnRight: v:true,
-    \ outlineWinSize: 60
-    \ })
-
-nnoremap <leader>cd :LspPeekDefinition<cr>
-nnoremap <leader>Cd :LspGotoDefinition<cr>
-
-nnoremap <leader>cr :LspPeekReferences<cr>
-nnoremap <leader>Cr :LspShowReferences<cr>
-
-nnoremap <leader>cs :LspDocumentSymbol <cr>
-nnoremap <leader>Cs :LspOutline<cr>
-
-nnoremap <leader>ch :LspHover<cr>
-
-nnoremap <leader>cx :LspDiagCurrent<cr>
-nnoremap <leader>Cx :LspDiagShow<cr>
-
-nnoremap ]x :LspDiagNext<cr>
-nnoremap [x :LspDiagPrev<cr>
-nnoremap [X :LspDiagFirst<cr>
-nnoremap ]X :LspDiagLast<cr>
+"packadd lsp
+"
+"" R language server
+"call LspAddServer([#{
+"	\    name: 'R',
+"	\    filetype: ['r', 'rmd'],
+"	\    path: 'R',
+"	\    args: ['--no-echo', '-e', 'languageserver::run()']
+"	\  }])
+"
+"call LspOptionsSet(#{
+"    \ highlightDiagInline: v:false,
+"    \ outlineOnRight: v:true,
+"    \ outlineWinSize: 60
+"    \ })
+"
+"nnoremap <leader>cd :LspPeekDefinition<cr>
+"nnoremap <leader>Cd :LspGotoDefinition<cr>
+"
+"nnoremap <leader>cr :LspPeekReferences<cr>
+"nnoremap <leader>Cr :LspShowReferences<cr>
+"
+"nnoremap <leader>cs :LspDocumentSymbol <cr>
+"nnoremap <leader>Cs :LspOutline<cr>
+"
+"nnoremap <leader>ch :LspHover<cr>
+"
+"nnoremap <leader>cx :LspDiagCurrent<cr>
+"nnoremap <leader>Cx :LspDiagShow<cr>
+"
+"nnoremap ]x :LspDiagNext<cr>
+"nnoremap [x :LspDiagPrev<cr>
+"nnoremap [X :LspDiagFirst<cr>
+"nnoremap ]X :LspDiagLast<cr>
 
