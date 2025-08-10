@@ -8,3 +8,5 @@
 --exclude=*.md
 --exclude=*.css
 --exclude=*.xml
+--exclude=*.json
+--exclude=*.svg
