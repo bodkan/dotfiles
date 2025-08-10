@@ -110,6 +110,15 @@
   :bind
   (:map dired-mode-map ("r" . mp/dired-find-file)))
 
+(use-package pdf-tools
+  :mode
+  (("\\.pdf$" . pdf-view-mode))
+
+  :config
+  (pdf-tools-install :no-query)
+
+  (setq-default pdf-view-display-size 0.8))
+
 ;;
 ;; General setup
 ;;
