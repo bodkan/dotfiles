@@ -137,6 +137,9 @@
 
 (setq kill-whole-line t)
 
+(setq inhibit-startup-screen t)
+(setq ibuffer-never-show-predicates '("^\\*"))
+
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (winner-mode 1)
