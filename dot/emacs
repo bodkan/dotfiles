@@ -224,8 +224,7 @@ there's no active region."
     (load custom-file))
 
 (if (display-graphic-p)
-    (progn (toggle-frame-maximized)
-           (menu-bar-mode -1)))
+    (progn (toggle-frame-maximized)))
 
 ;;; https://github.com/howardabrams/dot-files/blob/master/emacs-eshell.org#shell-favorites
 
