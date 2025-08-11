@@ -78,7 +78,15 @@ set mouse=a
 
 set noshowmode
 
-colorscheme quiet
+let g:netrw_list_hide = '^\..*'
+
+if has('gui_running')
+    colorscheme shine
+    set guifont=Monaco:h14
+else
+    colorscheme quiet
+endif
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
@@ -102,6 +110,9 @@ vnoremap <silent> * :<C-u>call VisualSelection('', '')<cr>/<C-R>=@/<cr><cr>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<cr>?<C-R>=@/<cr><cr>
 
 nnoremap <leader>w :set wrap!<cr>
+
+nnoremap <leader>E :edit $HOME/.vimrc<cr>
+nnoremap <leader>S :source $HOME/.vimrc<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Tabs and indentation
@@ -134,16 +145,16 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 " quick jump to a buffer
-nnoremap <leader><tab> :ls<cr>:b<space>
+nnoremap <leader>bl :ls<cr>:b<space>
 
 " quick jump to the previous buffer
-nnoremap <leader>bb <c-^>
+nnoremap <leader><tab> <c-^>
 
 " quick jump to a buffer
 nnoremap <leader>bo :browse oldfiles<cr>
 
 " close the current buffer
-nnoremap <leader>bx :bdelete<cr>
+nnoremap <leader>bd :bdelete<cr>
 
 " moving between buffers
 nnoremap ]b :bnext<cr>
@@ -160,7 +171,7 @@ nnoremap [t :tabprevious<cr>
 
 " toggle between the current and the last accessed tab
 let g:lasttab = 1
-nnoremap <leader>tt :exe "tabn ".g:lasttab<cr>
+nnoremap <leader><bs> :exe "tabn ".g:lasttab<cr>
 autocmd TabLeave * let g:lasttab = tabpagenr()
 
 " if a buffer is already open in another window/tab, switch to it
@@ -207,38 +218,38 @@ endfunction
 " LSP config
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-"packadd lsp
-"
-"" R language server
-"call LspAddServer([#{
-"	\    name: 'R',
-"	\    filetype: ['r', 'rmd'],
-"	\    path: 'R',
-"	\    args: ['--no-echo', '-e', 'languageserver::run()']
-"	\  }])
-"
-"call LspOptionsSet(#{
-"    \ highlightDiagInline: v:false,
-"    \ outlineOnRight: v:true,
-"    \ outlineWinSize: 60
-"    \ })
-"
-"nnoremap <leader>cd :LspPeekDefinition<cr>
-"nnoremap <leader>Cd :LspGotoDefinition<cr>
-"
-"nnoremap <leader>cr :LspPeekReferences<cr>
-"nnoremap <leader>Cr :LspShowReferences<cr>
-"
-"nnoremap <leader>cs :LspDocumentSymbol <cr>
-"nnoremap <leader>Cs :LspOutline<cr>
-"
-"nnoremap <leader>ch :LspHover<cr>
-"
-"nnoremap <leader>cx :LspDiagCurrent<cr>
-"nnoremap <leader>Cx :LspDiagShow<cr>
-"
-"nnoremap ]x :LspDiagNext<cr>
-"nnoremap [x :LspDiagPrev<cr>
-"nnoremap [X :LspDiagFirst<cr>
-"nnoremap ]X :LspDiagLast<cr>
+packadd lsp
+
+" R language server
+call LspAddServer([#{
+	\    name: 'R',
+	\    filetype: ['r', 'rmd'],
+	\    path: 'R',
+	\    args: ['--no-echo', '-e', 'languageserver::run()']
+	\  }])
+
+call LspOptionsSet(#{
+    \ highlightDiagInline: v:false,
+    \ outlineOnRight: v:true,
+    \ outlineWinSize: 60
+    \ })
+
+nnoremap <leader>cd :LspPeekDefinition<cr>
+nnoremap <leader>Cd :LspGotoDefinition<cr>
+
+nnoremap <leader>cr :LspPeekReferences<cr>
+nnoremap <leader>Cr :LspShowReferences<cr>
+
+nnoremap <leader>cs :LspDocumentSymbol <cr>
+nnoremap <leader>Cs :LspOutline<cr>
+
+nnoremap <leader>ch :LspHover<cr>
+
+nnoremap <leader>cx :LspDiagCurrent<cr>
+nnoremap <leader>Cx :LspDiagShow<cr>
+
+nnoremap ]x :LspDiagNext<cr>
+nnoremap [x :LspDiagPrev<cr>
+nnoremap [X :LspDiagFirst<cr>
+nnoremap ]X :LspDiagLast<cr>
 
