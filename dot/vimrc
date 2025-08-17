@@ -50,7 +50,7 @@ set showmatch
 " how many tenths of a second to blink when matching brackets
 set matchtime=2
 
-set noerrorbells
+set novisualbell
 
 " how long to wait for further keys
 set timeoutlen=500
@@ -76,8 +76,6 @@ set wrap
 
 set mouse=a
 
-set noshowmode
-
 " save permanent undo information
 if !isdirectory($HOME . "/.vim")
     call mkdir($HOME . "/.vim", "", 0770)
@@ -89,14 +87,6 @@ set undodir=$HOME/.vim/undo-dir
 set undofile
 
 let g:netrw_list_hide = '^\..*'
-
-if has('gui_running')
-    colorscheme shine
-    set guifont=Monaco:h14
-else
-    colorscheme quiet
-endif
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
