@@ -1,0 +1,12 @@
+--recurse=yes
+--exclude=.git
+--exclude=*.js
+--exclude=*.html
+--exclude=*.swp
+--exclude=*.bak
+--exclude=*.pyc
+--exclude=*.md
+--exclude=*.css
+--exclude=*.xml
+--exclude=*.json
+--exclude=*.svg

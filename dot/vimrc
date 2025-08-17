@@ -20,13 +20,12 @@ set scrolloff=5
 set number relativenumber
 
 set wildmenu
-set wildmode=list:longest
+set wildmode=longest:list,full
 set wildignore=*.o,*~,*.pyc
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 
 set ruler
 
-" height of the command bar
 set cmdheight=1
 
 set hidden
@@ -43,19 +42,15 @@ set hlsearch
 " for regular expressions turn magic on
 set magic
 
-" show matching brackets when text indicator is over them
-set showmatch
-
 " show partial commands as they are typed
 set showcmd
+
+set showmatch
 
 " how many tenths of a second to blink when matching brackets
 set matchtime=2
 
-" no annoying sound on errors
-set noerrorbells
 set novisualbell
-set t_vb=
 
 " how long to wait for further keys
 set timeoutlen=500
@@ -71,8 +66,6 @@ set ffs=unix,dos,mac
 " always show the status line
 set laststatus=2
 
-set showmode
-
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ \ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 set nobackup
@@ -83,11 +76,27 @@ set wrap
 
 set mouse=a
 
-autocmd BufWritePost *.c,*.h,*.py,*.R,*.cpp,*.hpp silent! !ctags . &
+" save permanent undo information
+if !isdirectory($HOME . "/.vim")
+    call mkdir($HOME . "/.vim", "", 0770)
+endif
+if !isdirectory($HOME . "/.vim/undo-dir")
+    call mkdir($HOME . "/.vim/undo-dir", "", 0700)
+endif
+set undodir=$HOME/.vim/undo-dir
+set undofile
+
+let g:netrw_list_hide = '^\..*'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
+
+" automatically generate tags file for given filetypes
+autocmd BufWritePost *.py,*.R silent! !ctags . &
+
+" toggle paste mode on and off (prevent broken indentation etc.)
+nnoremap <leader>pp :setlocal paste!<cr>
 
 " :W is a sudo save
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
@@ -100,16 +109,10 @@ nnoremap <leader>h :set hlsearch!<cr>
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<cr>/<C-R>=@/<cr><cr>
 vnoremap <silent> # :<C-u>call VisualSelection('', '')<cr>?<C-R>=@/<cr><cr>
 
-nnoremap <C-a> 0
-nnoremap <C-e> $
-inoremap <C-a> <C-o>0
-inoremap <C-e> <C-o>$
-
-nnoremap <bs> <c-^>
-
-nnoremap <leader>re :Rexplore<cr>
-
 nnoremap <leader>w :set wrap!<cr>
+
+nnoremap <leader>E :edit $HOME/.vimrc<cr>
+nnoremap <leader>S :source $HOME/.vimrc<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Tabs and indentation
@@ -121,15 +124,18 @@ set expandtab
 " pressing TAB respects context
 set smarttab
 
-" one TAB is four characters wide
+" one TAB is four characters wide for everything...
 set shiftwidth=4
 set tabstop=4
-
-" break lines at word boundaries
-set linebreak
+set softtabstop=4
+" ... except R files
+autocmd FileType r :setlocal sw=2 ts=2 sts=2 
 
 set autoindent
 set smartindent
+
+" break lines at word boundaries
+set linebreak
 
 " return to last edit position when opening files
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -139,36 +145,33 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 " quick jump to a buffer
-nnoremap <leader>bb :ls<cr>:b<space>
+nnoremap <leader>bl :ls<cr>:b<space>
+
+" quick jump to the previous buffer
+nnoremap <leader><tab> <c-^>
 
 " quick jump to a buffer
 nnoremap <leader>bo :browse oldfiles<cr>
 
 " close the current buffer
-nnoremap <leader>bd :Bclose<cr>
-
-" close all other buffers
-nnoremap <leader>ba :bufdo bd<cr>
+nnoremap <leader>bd :bdelete<cr>
 
 " moving between buffers
-nnoremap <leader>]b :bnext<cr>
-nnoremap <leader>[b :bprevious<cr>
-nnoremap <leader>[B :blast<cr>
-nnoremap <leader>]B :bfirst<cr>
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprevious<cr>
 
 " managing tabs
 nnoremap <leader>te :tabedit<space>
 nnoremap <leader>tc :tabnew<cr>
 nnoremap <leader>tx :tabclose<cr>
-nnoremap <leader>ta :tabonly<cr>
 
 " moving between tabs
-nnoremap <leader>]t :tabnext<cr>
-nnoremap <leader>[t :tabprevious<cr>
+nnoremap ]t :tabnext<cr>
+nnoremap [t :tabprevious<cr>
 
 " toggle between the current and the last accessed tab
 let g:lasttab = 1
-nnoremap <leader>tt :exe "tabn ".g:lasttab<cr>
+nnoremap <leader><bs> :exe "tabn ".g:lasttab<cr>
 autocmd TabLeave * let g:lasttab = tabpagenr()
 
 " if a buffer is already open in another window/tab, switch to it
@@ -176,35 +179,9 @@ set switchbuf=useopen,usetab,newtab
 " always show tabline
 set showtabline=2
 
-
-""""""""""""""""""""""""""""""""""""""""""""""""""
-" Editing shortcuts
-""""""""""""""""""""""""""""""""""""""""""""""""""
-
-if has("mac") || has("macunix")
-  nmap <D-j> <M-j>
-  nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-k> <M-k>
-endif
-
-" toggle paste mode on and off (prevent broken indentation etc.)
-nnoremap <leader>pp :setlocal paste!<cr>
-
-autocmd BufWritePre *.txt,*.R,*.py,*.md,*.Rmd,*.sh :call CleanExtraSpaces()
-
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Helper functions
 """"""""""""""""""""""""""""""""""""""""""""""""""
-
-" Delete trailing white space on save
-fun! CleanExtraSpaces()
-    let save_cursor = getpos(".")
-    let old_query = getreg('/')
-    silent! %s/\s\+$//e
-    call setpos('.', save_cursor)
-    call setreg('/', old_query)
-endfun
 
 " Return true if paste mode is enabled
 function! HasPaste()
@@ -214,31 +191,12 @@ function! HasPaste()
     return ''
 endfunction
 
-" Do not close window when deleting a buffer
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
-
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
-
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
-
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
-endfunction
-
+" Feed a given string to the command line
 function! CmdLine(str)
     call feedkeys(":" . a:str)
 endfunction
 
+" Select visually the word under cursor
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
     execute "normal! vgvy"
@@ -255,4 +213,43 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" LSP config
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+packadd lsp
+
+" R language server
+call LspAddServer([#{
+	\    name: 'R',
+	\    filetype: ['r', 'rmd'],
+	\    path: 'R',
+	\    args: ['--no-echo', '-e', 'languageserver::run()']
+	\  }])
+
+call LspOptionsSet(#{
+    \ highlightDiagInline: v:false,
+    \ outlineOnRight: v:true,
+    \ outlineWinSize: 60
+    \ })
+
+nnoremap <leader>cd :LspPeekDefinition<cr>
+nnoremap <leader>Cd :LspGotoDefinition<cr>
+
+nnoremap <leader>cr :LspPeekReferences<cr>
+nnoremap <leader>Cr :LspShowReferences<cr>
+
+nnoremap <leader>cs :LspDocumentSymbol <cr>
+nnoremap <leader>Cs :LspOutline<cr>
+
+nnoremap <leader>ch :LspHover<cr>
+
+nnoremap <leader>cx :LspDiagCurrent<cr>
+nnoremap <leader>Cx :LspDiagShow<cr>
+
+nnoremap ]x :LspDiagNext<cr>
+nnoremap [x :LspDiagPrev<cr>
+nnoremap [X :LspDiagFirst<cr>
+nnoremap ]X :LspDiagLast<cr>
 

@@ -24,12 +24,15 @@
 
 (setq use-package-always-ensure t)
 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-
-
 ;;
 ;; Install and configure required packages
 ;;
+
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "LANG"))
 
 (use-package zoom-window
   :bind ("M-z" . zoom-window-zoom))
@@ -44,26 +47,11 @@
   ("M-k" . windmove-up)
   ("M-j" . windmove-down))
 
-(use-package exec-path-from-shell
-  :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-env "LANG"))
-
 (use-package which-key
   :init
   (which-key-mode))
 
-;; Colours for dired listings
-(use-package diredfl
-  :init
-  (diredfl-global-mode))
-
 (use-package magit
-  :demand
-  :config
-  (setq magit-refresh-status-buffer nil)
-  (remove-hook 'server-switch-hook 'magit-commit-diff)
   :bind
   ("C-x g" . magit-status))
 
@@ -74,10 +62,10 @@
   (:map vterm-mode-map (("s-n" . vterm-toggle-forward)
                         ("s-p" . vterm-toggle-forward))))
 
-(use-package avy
+  (use-package avy
   :bind
   ("C-." . avy-goto-char-2)
-  ("M-g g" . avy-goto-line))
+  ("C-M-." . avy-goto-line))
 
 (use-package ace-window
   :init
@@ -87,7 +75,7 @@
   (setq aw-scope 'frame)
   (custom-set-faces
    '(aw-leading-char-face
-     ((t (:inherit ace-jump-face-foreground :height 5.0 :foreground "red")))))
+     ((t (:inherit ace-jump-face-foreground :height 5.0 :foreground "green")))))
 
   (defun mp/aw-previous-window ()
     "Toggle between the last two selected windows."
@@ -100,12 +88,6 @@
   ("C-'" . ace-window))
 
 (use-package fireplace)
-
-(use-package projectile
-  :custom (projectile-project-search-path '("~/Projects" "~/Code"))
-  :bind-keymap (("C-c C-p" . projectile-command-map)
-                ("C-c p" . projectile-command-map))
-  :hook (after-init . projectile-mode))
 
 (use-package dired
   :ensure f
@@ -123,18 +105,22 @@
   (:map dired-mode-map ("r" . mp/dired-find-file)))
 
 (use-package pdf-tools
-  :defer t
-  :magic ("%PDF" . pdf-view-mode) ;; ensure DocView is not used
+  :mode
+  (("\\.pdf$" . pdf-view-mode))
+
   :config
   (pdf-tools-install :no-query)
-  (setq-default pdf-view-display-size 'fit-width)
-  (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-  :custom
-  (pdf-annot-activate-created-annotations t "automatically annotate highlights"))
 
-(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-      TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-      TeX-source-correlate-start-server t)
+  (setq-default pdf-view-display-size 'fit-height))
+
+(use-package ess
+  :defer t)
+
+(use-package poly-R
+  :config
+  (add-to-list 'auto-mode-alist
+               '("\\.[rR]md\\'" . poly-gfm+r-mode))
+  (setq markdown-code-block-braces t))
 
 ;;
 ;; General setup
@@ -144,7 +130,7 @@
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(menu-bar-mode -1)
+(menu-bar-mode t)
 
 (pixel-scroll-mode 1)
 
@@ -157,6 +143,9 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (winner-mode 1)
+
+(setq display-line-numbers-type 'relative)
+;; (global-display-line-numbers-mode)
 
 (setq mac-option-modifier 'super)
 (setq mac-command-modifier 'meta)
@@ -232,8 +221,6 @@ there's no active region."
 
 (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
 
-(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-
 (column-number-mode t)
 
 (setq custom-file "~/.emacs.d/emacs-custom")
@@ -241,81 +228,4 @@ there's no active region."
     (load custom-file))
 
 (if (display-graphic-p)
-    (progn (toggle-frame-maximized)
-           (menu-bar-mode -1)))
-
-;;; https://github.com/howardabrams/dot-files/blob/master/emacs-eshell.org#shell-favorites
-
-(require 'subr-x)
-
-(defvar mp/remote-shell-fav-hosts (make-hash-table :test 'equal)
-  "Table of host aliases for IPs or other actual references.")
-
-(defun mp/remote-shell-fav-hosts-map ()
-  "Returns the mapping between our simple names of our favorite
-hosts and their IP address. If the map is empty, and the function
-`mp/remote-shell-fav-hosts-get' has been defined, it calls that
-function to populate the map prior to returning it. This may
-return an empty map."
-  (when (and #'mp/remote-shell-fav-hosts-get
-             (hash-table-empty-p mp/remote-shell-fav-hosts))
-    (mp/remote-shell-fav-hosts-get))
-  mp/remote-shell-fav-hosts)
-
-(defun mp/remote-shell-fav-hosts-list ()
-  "Simply returns a list of known hosts from the cached map, or
-populates it first if it is empty and the
-`mp/remote-shell-fav-hosts-get' function has been defined."
-  (hash-table-keys (mp/remote-shell-fav-hosts-map)))
-
-(defun mp/remote-shell-fav-hosts-get ()
-  "My hook to the mp/remote-shell processes in order to connect to
-    my OpenStack controller, and create a hashtable of host names as
-    the keys, and IP addresses as the values."
-  (clrhash mp/remote-shell-fav-hosts)
-  ;; iterate over numbers of available number crunchers and populate
-  ;; the hash of server names/addresses
-  (dolist (nr '(1 2 3 4 5 6 7))
-    (let ((server (concat "racimocomp" (format "%02d" nr) "fl")))
-      (puthash server server mp/remote-shell-fav-hosts))))
-
-(defun mp/remote-shell-tramp-connection (hostname &optional root directory)
-  "Return a TRAMP connection string to HOSTNAME. If ROOT is
-non-nil, returns an sudo compatible string."
-  (when (null directory)
-    (setq directory ""))
-  ;; The ip address is either the value from a key in our cache, or whatever we pass in:
-  (let ((ipaddr (gethash hostname (mp/remote-shell-fav-hosts-map) hostname)))
-    (if root
-        (format "/ssh:%s|sudo:%s:%s" ipaddr ipaddr directory)
-      (format "/ssh:%s:%s"         ipaddr directory))))
-
-(defun mp/remote-shell (hostname &optional root)
-  "Start an shell experience on HOSTNAME, that can be an alias to
-a virtual machine from my 'cloud' server. With prefix command, opens
-the shell as the root user account."
-  (interactive
-   (list (if (fboundp #'ido-completing-read)
-             (ido-completing-read "Hostname: " (mp/remote-shell-fav-hosts-list))
-           (completing-read "Hostname: " (mp/remote-shell-fav-hosts-list)))))
-  (vterm)
-  (vterm-send-string (concat "ssh " hostname))
-  (vterm-send-return)
-  ;; (vterm-send-string "ts") ;; attach to a default tmux session
-  ;; (vterm-send-return)
-  (rename-buffer (concat "*vterm-" hostname "*")))
-
-(defun mp/remote-run-command (hostname command &optional root bufname directory)
-  "On HOSTNAME, run COMMAND (if the command ends with &, run
-asynchronously). With a `C-u' prefix, run the command as ROOT.
-When non-interactive, you can specify BUFNAME for the buffer's
-name, and DIRECTORY where the command should run."
-  (interactive
-   (list (if #'completing-read
-             (completing-read "Hostname: " (mp/remote-shell-fav-hosts-list))
-           (completing-read "Hostname: " (mp/remote-shell-fav-hosts-list)))
-         (read-string "Command: ")))
-  (when (equal current-prefix-arg '(4))
-    (setq root t))
-  (let ((default-directory (mp/remote-shell-tramp-connection hostname root directory)))
-    (shell-command command (mp/remote-shell-buffer-name hostname command bufname))))
+    (progn (toggle-frame-maximized)))

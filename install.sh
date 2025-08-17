@@ -1,25 +1,31 @@
 #!/bin/bash
 
+# dotfiles in ${HOME}
+echo "Creating symlinks under $HOME..."
 for f in dot/*; do
-    if [[ -d "$f" ]]; then
-        ln -snv "$(realpath "$f")" "$HOME/.$(basename "$f")"
-    elif [[ -f "$f" ]]; then
-        ln -sv "$(realpath "$f")" "$HOME/.$(basename "$f")"
-    fi
+    ln -s "$(realpath "$f")" "$HOME/.$(basename "$f")"
 done
 
-mkdir $HOME/.my_local
-mkdir $HOME/.my_local/bin
+# dotfiles in ${HOME}/.config
+echo "Creating symlinks under $HOME/.config..."
+for d in config/*; do
+    ln -Ts `realpath $d` $HOME/.${d}
+done
 
+# a couple of binaries and scripts
+echo "Creating symlinks to binaries and scripts..."
+mkdir -p $HOME/.my_local
+mkdir -p $HOME/.my_local/bin
 for f in bin/*; do
-    ln -sv `realpath $f` $HOME/.my_local/bin/`basename $f`
+    ln -s `realpath $f` $HOME/.my_local/bin/`basename $f`
 done
 
-mkdir -p $HOME/.config/rstudio/keybindings
-ln -sv `realpath rstudio-prefs.json` $HOME/.config/rstudio/rstudio-prefs.json
-ln -sv `realpath rstudio_bindings.json` $HOME/.config/rstudio/keybindings/rstudio_bindings.json
+# generate ~/.Renviron file with necessary contents
+echo "Generating contents of $HOME/.Renviron..."
 
-# generate ~/.Renviron file with necessary configs
+# extract GitHub access token first (if it's even present)
+GITHUB_PAT=$(awk -F= '/GITHUB_PAT/{print $2}' $HOME/.Renviron)
+
 echo "PATH=$PATH" > $HOME/.Renviron
 if [[ "$OSTYPE" == "darwin"* ]]; then
     mkdir -p $HOME/.my_local/R_LIBS
@@ -29,8 +35,10 @@ elif [[ ! -f /.dockerenv ]]; then
 fi
 
 # keep around GitHub access token if present
-if [[ -f $HOME/.Renviron ]]; then
-    GITHUB_PAT=$(awk -F= '/GITHUB_PAT/{print $2}' $HOME/.Renviron)
+if [[ -n $GITHUB_PAT ]]; then
+    echo "Generating GitHub access token..."
     echo GITHUB_PAT=$GITHUB_PAT >> $HOME/.Renviron
+else
+    echo "Skipping GitHub access token..."
 fi
 
