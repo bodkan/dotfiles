@@ -12,10 +12,10 @@
     "sourceNavigateBack": "Ctrl+Cmd+-",
     "switchFocusSourceConsole": "Ctrl+'",
     "activateTerminal": "Ctrl+T",
-    "activateSource": "Ctrl+I",
-    "activateConsole": "Ctrl+O",
+    "activateSource": "Ctrl+O",
+    "activateConsole": "Ctrl+I",
     "newTerminal": "Ctrl+Cmd+T",
-    "maximizeConsole": "Ctrl+Shift+O",
+    "maximizeConsole": "Ctrl+Shift+I",
     "commentUncomment": "Cmd+/",
     "debugBreakpoint": "Ctrl+Shift+D",
     "debugClearBreakpoints": "Ctrl+Shift+Cmd+D",
@@ -23,5 +23,7 @@
     "previousPlot": "Alt+Cmd+Left",
     "nextPlot": "Alt+Cmd+Right",
     "focusNextPane": "Ctrl+]",
-    "focusPreviousPane": "Ctrl+["
+    "focusPreviousPane": "Ctrl+[",
+    "executeCodeWithoutMovingCursor": "Ctrl+Enter",
+    "maximizeSource": "Ctrl+Shift+O"
 }

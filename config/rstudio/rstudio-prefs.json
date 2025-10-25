@@ -7,10 +7,10 @@
     "highlight_selected_line": true,
     "panes": {
         "quadrants": [
-            "Source",
-            "TabSet1",
             "Console",
-            "TabSet2"
+            "TabSet2",
+            "Source",
+            "TabSet1"
         ],
         "tabSet1": [
             "Environment",
@@ -31,7 +31,7 @@
         "hiddenTabSet": [
             "Tutorial"
         ],
-        "console_left_on_top": false,
+        "console_left_on_top": true,
         "console_right_on_top": true,
         "additional_source_columns": 0
     },
@@ -49,5 +49,8 @@
     "always_save_history": false,
     "python_project_environment_automatic_activate": false,
     "terminal_python_integration": false,
-    "jobs_tab_visibility": "shown"
+    "jobs_tab_visibility": "shown",
+    "default_project_location": "/private/tmp",
+    "initial_working_directory": "~",
+    "sync_files_pane_working_dir": true
 }
