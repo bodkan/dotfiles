@@ -7,6 +7,7 @@ for f in dot/*; do
 done
 
 # dotfiles in ${HOME}/.config
+mkdir -p ${HOME}/.config
 echo "Creating symlinks under $HOME/.config..."
 for d in config/*; do
     ln -Ts `realpath $d` $HOME/.${d}
