@@ -28,10 +28,7 @@ echo "Generating contents of $HOME/.Renviron..."
 GITHUB_PAT=$(awk -F= '/GITHUB_PAT/{print $2}' $HOME/.Renviron)
 
 echo "PATH=$PATH" > $HOME/.Renviron
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    mkdir -p $HOME/.mylocal/R_LIBS
-    echo "R_LIBS_USER=$HOME/.mylocal/R_LIBS" >> $HOME/.Renviron
-elif [[ ! -f /.dockerenv ]]; then
+if [[ ! -f /.dockerenv ]] && [[ "$OSTYPE" != "darwin"* ]]; then
     echo "R_LIBS_USER=$HOME/projects/.R_LIBS" >> $HOME/.Renviron
 fi
 
