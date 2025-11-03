@@ -13,9 +13,6 @@
             "TabSet1"
         ],
         "tabSet1": [
-            "Environment",
-            "Connections",
-            "Build",
             "Presentation"
         ],
         "tabSet2": [
@@ -24,11 +21,14 @@
             "Plots",
             "Packages",
             "Help",
+            "Build",
             "VCS",
             "Viewer",
             "Presentations"
         ],
         "hiddenTabSet": [
+            "Environment",
+            "Connections",
             "Tutorial"
         ],
         "console_left_on_top": true,
