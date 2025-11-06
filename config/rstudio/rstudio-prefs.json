@@ -16,19 +16,19 @@
             "Presentation"
         ],
         "tabSet2": [
-            "History",
+            "Environment",
             "Files",
             "Plots",
-            "Packages",
             "Help",
             "Build",
-            "VCS",
             "Viewer",
             "Presentations"
         ],
         "hiddenTabSet": [
-            "Environment",
+            "History",
             "Connections",
+            "Packages",
+            "VCS",
             "Tutorial"
         ],
         "console_left_on_top": true,
