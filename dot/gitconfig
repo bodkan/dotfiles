@@ -5,17 +5,17 @@
 [color]
 	ui = true
 [alias]
-    gs = git status
-    ga = git add
-    go = git checkout
-    gcm = gc -m
-    gca = gc --amend
-    gd = git diff
-    gdc = gd --cached
-    gb = git branch
-    gp = git push
-    glg = git log --oneline --decorate --graph
-    gl = git log
+    s = status
+    a = add
+    o = checkout
+    cm = commit -m
+    ca = commit  --amend
+    d = diff
+    dc = diff --cached
+    b = branch
+    p = push
+    lg = log --oneline --decorate --graph
+    l = log
 [core]
 	editor = vim
 	fileMode = false
