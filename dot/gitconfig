@@ -4,6 +4,18 @@
     email = git@bodkan.net
 [color]
 	ui = true
+[alias]
+    gs = git status
+    ga = git add
+    go = git checkout
+    gcm = gc -m
+    gca = gc --amend
+    gd = git diff
+    gdc = gd --cached
+    gb = git branch
+    gp = git push
+    glg = git log --oneline --decorate --graph
+    gl = git log
 [core]
 	editor = vim
 	fileMode = false
