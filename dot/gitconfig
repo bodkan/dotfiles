@@ -17,11 +17,11 @@
     lg = log --oneline --decorate --graph
     l = log
 [core]
-	editor = vim
-	fileMode = false
+    editor = vim
+    fileMode = false
 [push]
-	default = matching
+    default = matching
 [init]
-	defaultBranch = main
+    defaultBranch = main
 [credential]
     helper = cache
