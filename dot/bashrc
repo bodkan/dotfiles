@@ -7,6 +7,11 @@ alias R='R --no-save --no-restore-history --no-save --no-restore-data'
 
 # open a "dashboard" of ssh connections to remote servers of interest
 function dashboard() {
+    if [[ -z $1 ]]; then
+        echo "Error: At least one hostname is required"
+        return
+    fi
+
     HOSTS=("$@")
 
     IFS="+"
