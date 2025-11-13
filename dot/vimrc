@@ -160,7 +160,7 @@ autocmd TabLeave * let g:lasttab = tabpagenr()
 " if a buffer is already open in another window/tab, switch to it
 set switchbuf=useopen,usetab,newtab
 " always show tabline
-set showtabline=2
+set showtabline=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Helper functions
