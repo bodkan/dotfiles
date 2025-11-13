@@ -5,6 +5,11 @@ alias ll="ls -lh --color=auto"
 
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
 
+# open a dedicated tmux session in the current directory (project)
+function tmuxp() {
+    tmux new-session -A -s $(basename $PWD)
+}
+
 function vpn-up() {
   # three lines expected in ~/.ku_vpn with username, password, vpn.ku.dk
   VPN_FILE=${HOME}/.ku_vpn
