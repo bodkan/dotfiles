@@ -39,12 +39,10 @@ set smartcase
 set incsearch
 set hlsearch
 
-" for regular expressions turn magic on
-set magic
-
 " show partial commands as they are typed
 set showcmd
 
+" show highlight of matching brackets
 set showmatch
 
 " how many tenths of a second to blink when matching brackets
@@ -60,9 +58,6 @@ set encoding=utf8
 " encoding written
 set fileencoding=utf-8
 
-" use Unix as the standard file type
-set ffs=unix,dos,mac
-
 " always show the status line
 set laststatus=2
 
@@ -74,14 +69,9 @@ set noswapfile
 
 set wrap
 
-let g:netrw_list_hide = '^\..*'
-
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
-
-" automatically generate tags file for given filetypes
-autocmd BufWritePost *.py,*.R silent! !ctags . &
 
 " toggle paste mode on and off (prevent broken indentation etc.)
 nnoremap <leader>pp :setlocal paste!<cr>
