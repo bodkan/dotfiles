@@ -61,8 +61,6 @@ set fileencoding=utf-8
 " always show the status line
 set laststatus=2
 
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ \ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
-
 set nobackup
 set nowritebackup
 set noswapfile
@@ -72,9 +70,6 @@ set wrap
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
-
-" toggle paste mode on and off (prevent broken indentation etc.)
-nnoremap <leader>pp :setlocal paste!<cr>
 
 " :W is a sudo save
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
@@ -160,14 +155,6 @@ set showtabline=2
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Helper functions
 """"""""""""""""""""""""""""""""""""""""""""""""""
-
-" Return true if paste mode is enabled
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
 
 " Feed a given string to the command line
 function! CmdLine(str)
