@@ -79,8 +79,18 @@ nnoremap <leader>n :set number! relativenumber!<cr>
 nnoremap <leader>h :set hlsearch!<cr>
 
 " pressing * or # searches for the current visual selection
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<cr>/<C-R>=@/<cr><cr>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<cr>?<C-R>=@/<cr><cr>
+vnoremap <silent> * :<C-u>call VisualSelection('')<cr>/<C-R>=@/<cr><cr>
+vnoremap <silent> # :<C-u>call VisualSelection('')<cr>?<C-R>=@/<cr><cr>
+
+" vimgrep for visual selection
+vnoremap <silent> <leader>g :call VisualSelection('vimgrep')<CR>
+" replace for visual selection
+vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
+
+nnoremap <leader>cc :botright cope<cr>
+nnoremap ]p :cnext<cr>
+nnoremap [p :cprevious<cr>
+
 
 nnoremap <leader>w :set wrap!<cr>
 
@@ -162,16 +172,16 @@ function! CmdLine(str)
 endfunction
 
 " Select visually the word under cursor
-function! VisualSelection(direction, extra_filter) range
+function! VisualSelection(action) range
     let l:saved_reg = @"
     execute "normal! vgvy"
 
     let l:pattern = escape(@", "\\/.*'$^~[]")
     let l:pattern = substitute(l:pattern, "\n$", "", "")
 
-    if a:direction == 'gv'
-        call CmdLine("Ack '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
+    if a:action == 'vimgrep'
+        call CmdLine("vimgrep '" . l:pattern . "' " )
+    elseif a:action == 'replace'
         call CmdLine("%s" . '/'. l:pattern . '/')
     endif
 
