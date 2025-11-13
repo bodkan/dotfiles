@@ -13,14 +13,6 @@ for d in config/*; do
     ln -Ts `realpath $d` $HOME/.${d}
 done
 
-# a couple of binaries and scripts
-echo "Creating symlinks to binaries and scripts..."
-mkdir -p $HOME/.mylocal
-mkdir -p $HOME/.mylocal/bin
-for f in bin/*; do
-    ln -s `realpath $f` $HOME/.mylocal/bin/`basename $f`
-done
-
 # generate ~/.Renviron file with necessary contents
 echo "Generating contents of $HOME/.Renviron..."
 
