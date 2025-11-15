@@ -86,13 +86,13 @@ nnoremap <leader>m :set relativenumber!<cr>
 nnoremap <leader>h :set hlsearch!<cr>
 
 " pressing * or # searches for the current visual selection
-vnoremap <silent> * :<C-u>call VisualSelection('')<cr>/<C-R>=@/<cr><cr>
-vnoremap <silent> # :<C-u>call VisualSelection('')<cr>?<C-R>=@/<cr><cr>
+vnoremap <silent> * :<C-u>call SelectionAction('')<cr>/<C-R>=@/<cr><cr>
+vnoremap <silent> # :<C-u>call SelectionAction('')<cr>?<C-R>=@/<cr><cr>
 
 " vimgrep for visual selection
-vnoremap <silent> <leader>g :call VisualSelection('vimgrep')<CR>
+vnoremap <silent> <leader>g :call SelectionAction('vimgrep')<CR>
 " replace for visual selection
-vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
+vnoremap <silent> <leader>r :call SelectionAction('replace')<CR>
 
 nnoremap <leader>cc :botright cope<cr>
 nnoremap ]p :cnext<cr>
@@ -178,7 +178,7 @@ function! CmdLine(str)
 endfunction
 
 " Select visually the word under cursor
-function! VisualSelection(action) range
+function! SelectionAction(action) range
     let l:saved_reg = @"
     execute "normal! vgvy"
 
