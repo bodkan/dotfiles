@@ -67,6 +67,7 @@ set noswapfile
 
 set wrap
 
+" sync vim clipboard with the system clipboard
 set clipboard+=unnamedplus
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
