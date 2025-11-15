@@ -67,6 +67,8 @@ set noswapfile
 
 set wrap
 
+set clipboard+=unnamedplus
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
