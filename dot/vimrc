@@ -73,6 +73,11 @@ set clipboard+=unnamedplus
 " automatically generate tags file for given filetypes
 autocmd BufWritePost *.py,*.R silent! !ctags . &
 
+" save undo trees in files
+set undofile
+set undodir=~/.vim/undo
+set undolevels=10000
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
