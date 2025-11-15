@@ -67,6 +67,9 @@ set noswapfile
 
 set wrap
 
+" automatically generate tags file for given filetypes
+autocmd BufWritePost *.py,*.R silent! !ctags . &
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -75,6 +78,7 @@ set wrap
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 nnoremap <leader>n :set number! relativenumber!<cr>
+nnoremap <leader>m :set relativenumber!<cr>
 
 nnoremap <leader>h :set hlsearch!<cr>
 
