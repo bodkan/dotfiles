@@ -70,6 +70,9 @@ set wrap
 " sync vim clipboard with the system clipboard
 set clipboard+=unnamedplus
 
+" automatically generate tags file for given filetypes
+autocmd BufWritePost *.py,*.R silent! !ctags . &
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -78,6 +81,7 @@ set clipboard+=unnamedplus
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 nnoremap <leader>n :set number! relativenumber!<cr>
+nnoremap <leader>m :set relativenumber!<cr>
 
 nnoremap <leader>h :set hlsearch!<cr>
 
@@ -93,7 +97,6 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 nnoremap <leader>cc :botright cope<cr>
 nnoremap ]p :cnext<cr>
 nnoremap [p :cprevious<cr>
-
 
 nnoremap <leader>w :set wrap!<cr>
 
@@ -140,7 +143,7 @@ nnoremap <leader><tab> <c-^>
 nnoremap <leader>bo :browse oldfiles<cr>
 
 " close the current buffer
-nnoremap <leader>bd :bdelete<cr>
+nnoremap <leader>bx :bdelete<cr>
 
 " moving between buffers
 nnoremap ]b :bnext<cr>
@@ -163,7 +166,7 @@ autocmd TabLeave * let g:lasttab = tabpagenr()
 " if a buffer is already open in another window/tab, switch to it
 set switchbuf=useopen,usetab,newtab
 " always show tabline
-set showtabline=2
+set showtabline=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Helper functions
