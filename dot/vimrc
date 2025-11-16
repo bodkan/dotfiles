@@ -67,9 +67,6 @@ set noswapfile
 
 set wrap
 
-" sync vim clipboard with the system clipboard
-set clipboard+=unnamedplus
-
 " automatically generate tags file for given filetypes
 autocmd BufWritePost *.py,*.R silent! !ctags . &
 
@@ -99,9 +96,10 @@ vnoremap <silent> <leader>g :call SelectionAction('vimgrep')<CR>
 " replace for visual selection
 vnoremap <silent> <leader>r :call SelectionAction('replace')<CR>
 
-nnoremap <leader>cc :botright cope<cr>
-nnoremap ]p :cnext<cr>
-nnoremap [p :cprevious<cr>
+nnoremap <leader>q :botright copen<cr>
+nnoremap <leader>Q :clist<cr>
+nnoremap ]q :cnext<cr>
+nnoremap [q :cprevious<cr>
 
 nnoremap <leader>w :set wrap!<cr>
 
