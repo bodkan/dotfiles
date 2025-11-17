@@ -68,7 +68,7 @@ set noswapfile
 set wrap
 
 " automatically generate tags file for given filetypes
-autocmd BufWritePost *.py,*.R silent! !ctags . &
+autocmd BufWritePost *.py,*.R,*.Rmd silent! !ctags . &
 
 " save undo trees in files
 set undofile
