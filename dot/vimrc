@@ -21,7 +21,7 @@ set number relativenumber
 
 set wildmenu
 set wildmode=longest:list,full
-set wildignore+=*.o,*~,*.pyc,*/.git/*,,*/.DS_Store
+set wildignore+=*.o,*~,*.pyc,*/.git/*,*/.DS_Store
 set wildignorecase
 
 set ruler
