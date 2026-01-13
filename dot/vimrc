@@ -79,6 +79,16 @@ set undolevels=10000
 
 set path+=**
 
+set splitbelow
+set splitright
+
+" in command mode, use normal ignorecase, not smartcase
+augroup dynamic_smartcase
+    autocmd!
+    autocmd CmdLineEnter : set nosmartcase
+    autocmd CmdLineLeave : set smartcase
+augroup END
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
