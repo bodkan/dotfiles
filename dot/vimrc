@@ -117,6 +117,9 @@ nnoremap [q :cprevious<cr>
 
 nnoremap <leader>w :set wrap!<cr>
 
+" find file in the root of the current project (if any)
+nnoremap <leader>ff :edit <c-r>=FindRootDirectory()<cr>/**/*
+
 nnoremap <leader>E :edit $HOME/.vimrc<cr>
 nnoremap <leader>S :source $HOME/.vimrc<cr>
 
@@ -212,3 +215,12 @@ function! SelectionAction(action) range
     let @" = l:saved_reg
 endfunction
 
+" Find root of the current "project" (if any) based on the current open file
+function! FindRootDirectory()
+    let root = systemlist("git rev-parse --show-toplevel")[0]
+    if v:shell_error
+        return ""
+    else
+        return root
+    endif
+endfunction
