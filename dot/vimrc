@@ -68,12 +68,16 @@ set noswapfile
 set wrap
 
 " automatically generate tags file for given filetypes
-autocmd BufWritePost *.py,*.R,*.Rmd silent! !ctags . &
+if !empty(expand(glob("tags")))
+    autocmd BufWritePost *.py,*.R,*.Rmd silent! !ctags . &
+end
 
 " save undo trees in files
 set undofile
 set undodir=~/.vim/undo
 set undolevels=10000
+
+set path+=**
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
@@ -83,7 +87,7 @@ set undolevels=10000
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 nnoremap <leader>n :set number! relativenumber!<cr>
-nnoremap <leader>m :set relativenumber!<cr>
+nnoremap <leader>N :set relativenumber!<cr>
 
 nnoremap <leader>h :set hlsearch!<cr>
 
@@ -197,3 +201,4 @@ function! SelectionAction(action) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+
