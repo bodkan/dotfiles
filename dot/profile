@@ -17,6 +17,8 @@ export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
 export PATH="$PATH:/Library/TeX/texbin"
 export PATH="$PATH:/Applications/Chromium.app/Contents/MacOS"
 
+export EDITOR=vi
+
 if [[ "$OSTYPE" == "darwin"* ]]; then
     eval "$(fzf --bash)"
     eval "$(/opt/homebrew/bin/brew shellenv)"
