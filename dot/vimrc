@@ -21,7 +21,7 @@ set number relativenumber
 
 set wildmenu
 set wildmode=longest:list,full
-set wildignore+=*.o,*~,*.pyc,*/.git/*,,*/.DS_Store
+set wildignore+=*.o,*~,*.pyc,*/.git/*,*/.DS_Store
 set wildignorecase
 
 set ruler
@@ -78,6 +78,8 @@ set undodir=~/.vim/undo
 set undolevels=10000
 
 set path+=**
+
+set regexpengine=0
 
 set splitbelow
 set splitright
@@ -154,7 +156,7 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 " quick jump to a buffer
-nnoremap <leader>bl :ls<cr>:b<space>
+nnoremap <leader>bb :ls<cr>:b<space>
 
 " quick jump to the previous buffer
 nnoremap <leader><tab> <c-^>
@@ -163,7 +165,7 @@ nnoremap <leader><tab> <c-^>
 nnoremap <leader>bo :browse oldfiles<cr>
 
 " close the current buffer
-nnoremap <leader>bx :bdelete<cr>
+nnoremap <leader>bd :b#<cr>:bd#<cr>
 
 " moving between buffers
 nnoremap ]b :bnext<cr>
@@ -172,7 +174,7 @@ nnoremap [b :bprevious<cr>
 " managing tabs
 nnoremap <leader>te :tabedit<space>
 nnoremap <leader>tc :tabnew<cr>
-nnoremap <leader>tx :tabclose<cr>
+nnoremap <leader>td :tabclose<cr>
 
 " moving between tabs
 nnoremap ]t :tabnext<cr>
