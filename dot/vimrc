@@ -165,7 +165,7 @@ nnoremap <leader><tab> <c-^>
 nnoremap <leader>bo :browse oldfiles<cr>
 
 " close the current buffer
-nnoremap <leader>bd :b#<cr>:bd#<cr>
+nnoremap <leader>bd :bdelete<cr>
 
 " moving between buffers
 nnoremap ]b :bnext<cr>
