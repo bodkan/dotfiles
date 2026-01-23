@@ -91,6 +91,12 @@ augroup dynamic_smartcase
     autocmd CmdLineLeave : set smartcase
 augroup END
 
+augroup terminal_behavior
+    autocmd!
+    " no line numbers in the terminal ever
+    autocmd TerminalOpen * setlocal nonumber norelativenumber
+augroup END
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
