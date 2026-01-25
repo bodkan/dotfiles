@@ -37,7 +37,7 @@ set whichwrap+=<,>,h,l
 set ignorecase
 set smartcase
 set incsearch
-set hlsearch
+set nohlsearch
 
 " show partial commands as they are typed
 set showcmd
@@ -124,6 +124,10 @@ set smartindent
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
+
+" toggle a breakpoint at the current line
+nnoremap <silent> <leader>p :call ToggleBreakpoint()<cr>
+nnoremap <silent> <leader>P :call ClearBreakpoints()<cr>
 
 " :W is a sudo save
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
@@ -228,5 +232,39 @@ function! FindRootDirectory()
         return ""
     else
         return root
+    endif
+endfunction
+
+" Toggle `breakpoint()` (Python) or `browser()` (R) function call
+function! ToggleBreakpoint()
+    let l:breakpoint_marker = " ##### breakpoint #####"
+    let l:line=getline('.')
+    let l:has_breakpoint = match(line, breakpoint_marker)
+    if has_breakpoint == -1
+        if &filetype ==# 'python'
+            execute "normal! obreakpoint()" .. breakpoint_marker .. "\<esc>^"
+        elseif &filetype ==# 'r'
+            normal! "normal! obrowser()" .. breakpoint_marker .. "\<esc>^"
+        else
+            echo "Not applicable for this filetype!"
+        endif
+    else
+        normal! 0ddk^
+    endif
+endfunction
+
+" Remove all `breakpoint()` (Python) or `browser()` (R) function calls
+function! ClearBreakpoints()
+    let l:breakpoint_marker = " ##### breakpoint #####"
+    if &filetype ==# 'python'
+        let l:marker = "breakpoint\(\)" .. breakpoint_marker
+    elseif &filetype ==# 'r'
+        let l:marker = "browser\(\)" .. breakpoint_marker
+    endif
+
+    if marker == ""
+        echo "Not applicable for this filetype!"
+    else
+        execute "g/^.*" .. marker .. ".*$/d _"
     endif
 endfunction
