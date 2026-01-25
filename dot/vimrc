@@ -86,7 +86,7 @@ highlight VertSplit cterm=NONE guifg=NONE
 
 " automatically generate tags file for given filetypes
 if !empty(expand(glob("tags")))
-    autocmd BufWritePost *.py,*.R,*.Rmd silent! !ctags . &
+    autocmd BufWritePost *.py,*.R,*.Rmd silent! !ctags -o newtags -R .; mv newtags tags &
 end
 
 " in command mode, use normal ignorecase, not smartcase
