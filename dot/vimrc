@@ -3,6 +3,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 let mapleader=" "
+let maplocalleader="\\"
 
 set history=500
 
@@ -134,6 +135,9 @@ set smartindent
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
+" quick <esc>
+inoremap kj <esc>
+
 " toggle a breakpoint at the current line
 nnoremap <silent> <leader>p :call ToggleBreakpoint()<cr>:w<cr>
 nnoremap <silent> <leader>P :call ClearBreakpoints()<cr>:w<cr>
@@ -165,8 +169,8 @@ nnoremap <leader>w :set wrap!<cr>
 " find file in the root of the current project (if any)
 nnoremap <leader>ff :edit <c-r>=FindRootDirectory()<cr>/**/*
 
-nnoremap <leader>E :edit $HOME/.vimrc<cr>
-nnoremap <leader>S :source $HOME/.vimrc<cr>
+nnoremap <leader>E :split $MYVIMRC<cr>
+nnoremap <leader>S :source $MYVIMRC<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Windows, buffers, tabs
