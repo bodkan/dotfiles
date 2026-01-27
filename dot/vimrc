@@ -103,7 +103,7 @@ augroup terminal_behavior
     autocmd TerminalOpen * setlocal nonumber norelativenumber
 augroup END
 
-" :help last-position-jump
+" taken from :help last-position-jump
 augroup RestoreCursor
   autocmd!
   autocmd BufReadPost *
@@ -139,8 +139,8 @@ set smartindent
 inoremap kj <esc>
 
 " toggle a breakpoint at the current line
-nnoremap <silent> <leader>p :call ToggleBreakpoint()<cr>:w<cr>
-nnoremap <silent> <leader>P :call ClearBreakpoints()<cr>:w<cr>
+nnoremap <silent> <leader>p :call ToggleBreakpoint()<cr>
+nnoremap <silent> <leader>P :call ClearBreakpoints()<cr>
 
 " :W is a sudo save
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
@@ -181,9 +181,9 @@ augroup commenting_code
   autocmd FileType vim                       let b:comment_leader = '" '
 augroup END
 " ctrl + / to comment
-noremap <silent> <leader>; :<c-b>silent <c-e>s/^/<c-r>=escape(b:comment_leader,'\/')<cr>/<cr>:nohlsearch<cr>
+noremap <silent> <leader>; :<c-b>silent <c-e>s/^/<c-r>=escape(b:comment_leader,'\/')<cr>/<cr>:nohlsearch<cr>:w<cr>
 " ctrl + shift + / to uncomment
-noremap <silent> <leader>' :<c-b>silent <c-e>s/^\V<c-r>=escape(b:comment_leader,'\/')<cr>//e<cr>:nohlsearch<cr>
+noremap <silent> <leader>' :<c-b>silent <c-e>s/^\V<c-r>=escape(b:comment_leader,'\/')<cr>//e<cr>:nohlsearch<cr>:w<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Windows, buffers, tabs
@@ -274,8 +274,10 @@ function! ToggleBreakpoint()
     if has_breakpoint == -1
         if &filetype ==# 'python'
             execute "normal! obreakpoint()" .. g:breakpoint_marker .. "\<esc>^"
+            write
         elseif &filetype ==# 'r'
             normal! "normal! obrowser()" .. g:breakpoint_marker .. "\<esc>^"
+            write
         else
             echo "Not applicable for this filetype!"
         endif
@@ -287,16 +289,18 @@ endfunction
 
 " Remove all `breakpoint()` (Python) or `browser()` (R) function calls
 function! ClearBreakpoints()
+    let l:marker = ""
     " create a breakpoint marker matching the current buffer's language
     if &filetype ==# 'python'
-        let l:marker = "breakpoint\(\)" .. g:breakpoint_marker
+        marker = "breakpoint\(\)" .. g:breakpoint_marker
     elseif &filetype ==# 'r'
-        let l:marker = "browser\(\)" .. g:breakpoint_marker
+        marker = "browser\(\)" .. g:breakpoint_marker
     endif
 
     " delete all such markers (and avoid spamming the register)
     if marker != ""
         execute "g/^.*" .. marker .. ".*$/d _"
+        write
     else
         echo "Not applicable for this filetype!"
     endif
