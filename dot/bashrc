@@ -5,6 +5,10 @@ alias ll="ls -lh --color=auto"
 
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
 
+if [[ -f ~/.fzf.bash ]]; then
+    source ~/.fzf.bash
+fi
+
 export FZF_DEFAULT_OPTS='--multi --height=20% --layout reverse'
 export FZF_ALT_C_OPTS="--walker-skip .git,Library,Applications,Music --preview 'tree -C {}'"
 
