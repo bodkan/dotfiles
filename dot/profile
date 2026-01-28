@@ -43,7 +43,7 @@ alias ll="ls -lh --color=auto"
 alias R='R --no-save --no-restore-history --no-save --no-restore-data'
 
 export FZF_DEFAULT_OPTS='--multi --height=20% --layout reverse'
-export FZF_ALT_C_OPTS="--walker-skip .git,Library,Applications,Music --preview 'tree -C {}'"
+export FZF_ALT_C_OPTS="--walker-skip .git,Library,Applications,Music,.Rproj.user --preview 'tree -C {}'"
 
 # open a "dashboard" of ssh connections to remote servers of interest
 function dashboard() {
