@@ -27,6 +27,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     export DOCKER_HOST=$(limactl list docker --format 'unix://{{.Dir}}/sock/docker.sock')
     export XDG_CACHE_HOME="${HOME}/Library/Caches"
 else
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
     export PATH="$HOME/bin:$PATH"
     export DOCKER_HOST=unix:///run/user/243674353/docker.sock
 fi
