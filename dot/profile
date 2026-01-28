@@ -20,22 +20,88 @@ export PATH="$PATH:/Applications/Chromium.app/Contents/MacOS"
 export EDITOR=vi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    eval "$(fzf --bash)"
     eval "$(/opt/homebrew/bin/brew shellenv)"
     [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
     export HOMEBREW_NO_ANALYTICS=1
     export DOCKER_HOST=$(limactl list docker --format 'unix://{{.Dir}}/sock/docker.sock')
     export XDG_CACHE_HOME="${HOME}/Library/Caches"
 else
-    eval "$(fzf --bash)"
+    if [[ -f ~/.fzf.bash ]]; then
+        source ~/.fzf.bash
+    fi
     export PATH="$HOME/bin:$PATH"
     export DOCKER_HOST=unix:///run/user/243674353/docker.sock
 fi
 
+eval "$(fzf --bash)"
+
 # R development specific stuff
 export R_HAS_GGTREE="TRUE"
 
-if [[ -f $HOME/.bashrc && $- == *i* ]]; then
-    source $HOME/.bashrc
+alias ls="ls --color=auto"
+alias ll="ls -lh --color=auto"
+alias R='R --no-save --no-restore-history --no-save --no-restore-data'
+
+export FZF_DEFAULT_OPTS='--multi --height=20% --layout reverse'
+export FZF_ALT_C_OPTS="--walker-skip .git,Library,Applications,Music --preview 'tree -C {}'"
+
+# open a "dashboard" of ssh connections to remote servers of interest
+function dashboard() {
+    if [[ -z $1 ]]; then
+        echo "Error: At least one hostname is required"
+        return
+    fi
+
+    HOSTS=("$@")
+
+    IFS="+"
+    SESSION="session_${HOSTS[*]}"
+    unset IFS
+
+    if ! tmux ls | grep -q "^$SESSION:"; then
+        echo "Creating a tmux session..."
+
+        # create a new tmux session with the first host
+        echo "Connecting to ${HOSTS[0]}..."
+        tmux new-session -d -s "$SESSION" -n ${HOSTS[0]} "ssh ${HOSTS[0]}"
+
+        # iterate through the rest of the hosts and create a new window for each
+        for i in "${HOSTS[@]:1}"; do
+            echo "Connecting to ${i}..."
+            tmux new-window -t "$SESSION" -n $i "ssh ${i}"
+        done
+    else
+        echo "A tmux session ${SESSION} already exists!"
+    fi
+
+    tmux attach -t $SESSION
+}
+
+function vpn-up() {
+  # three lines expected in ~/.ku_vpn with username, password, vpn.ku.dk
+  VPN_FILE=${HOME}/.ku_vpn
+  if [ ! -f $VPN_FILE ]; then
+    echo "Error: missing $VPN_FILE"
+    return
+  fi
+  echo "Starting the vpn ..."
+
+  mapfile -t lines < "$VPN_FILE"
+  USERNAME="${lines[0]}"
+  PASSWORD="${lines[1]}"
+  VPN_SERVER="${lines[2]}"
+  echo $PASSWORD | sudo openconnect --background --passwd-on-stdin --user=$USERNAME $VPN_SERVER
+}
+
+function vpn-down() {
+  sudo kill -2 `pgrep openconnect`
+}
+
+export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\] \[\e[m\] \n\\$ "
+
+if [[ -f /.dockerenv ]]; then
+    export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\] \[\e[m\] \n[CONTAINER] \\$ "
+else
+    export PS1="\h:\[\e[32m\]\w\[\e[m\]\[\e[31m\] \[\e[m\] \n\\$ "
 fi
 
