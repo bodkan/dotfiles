@@ -15,6 +15,8 @@ filetype indent on
 set autoread
 autocmd FocusGained,BufEnter * silent! checktime
 
+set autowrite
+
 " number of lines to the cursor when moving vertically using j/k
 set scrolloff=5
 
