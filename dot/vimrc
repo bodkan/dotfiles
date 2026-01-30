@@ -36,8 +36,6 @@ let &t_EI.="\e[2 q" " normal mode
 autocmd InsertEnter * set ttimeout ttimeoutlen=1
 autocmd InsertLeave * set nottimeout ttimeoutlen=-1
 
-set cmdheight=1
-
 set hidden
 
 set backspace=eol,start,indent
@@ -144,9 +142,6 @@ set smartindent
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
-
-" quick <esc>
-inoremap kj <esc>
 
 " toggle a breakpoint at the current line
 nnoremap <silent> <leader>p :call ToggleBreakpoint()<cr>
