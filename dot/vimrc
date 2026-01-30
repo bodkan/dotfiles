@@ -137,7 +137,6 @@ autocmd FileType r :setlocal sw=2 ts=2 sts=2
 let g:r_indent_align_args = 0
 
 set autoindent
-set smartindent
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
