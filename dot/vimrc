@@ -177,19 +177,6 @@ nnoremap <leader>ff :edit <c-r>=FindRootDirectory()<cr>/**/*
 nnoremap <leader>E :split $MYVIMRC<cr>
 nnoremap <leader>S :source $MYVIMRC<cr>
 
-augroup commenting_code
-  autocmd!
-  autocmd FileType r,python,sh               let b:comment_leader = '# '
-  autocmd FileType c,cpp,java                let b:comment_leader = '// '
-  autocmd FileType tex                       let b:comment_leader = '% '
-  autocmd FileType mail                      let b:comment_leader = '> '
-  autocmd FileType vim                       let b:comment_leader = '" '
-augroup END
-" ctrl + / to comment
-noremap <silent> <leader>; :<c-b>silent <c-e>s/^/<c-r>=escape(b:comment_leader,'\/')<cr>/<cr>:nohlsearch<cr>:w<cr>
-" ctrl + shift + / to uncomment
-noremap <silent> <leader>' :<c-b>silent <c-e>s/^\V<c-r>=escape(b:comment_leader,'\/')<cr>//e<cr>:nohlsearch<cr>:w<cr>
-
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Windows, buffers, tabs
 """"""""""""""""""""""""""""""""""""""""""""""""""
