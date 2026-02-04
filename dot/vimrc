@@ -186,7 +186,7 @@ nnoremap <leader>bb :ls<cr>:b<space>
 " quick jump to the previous buffer
 nnoremap <leader><tab> <c-^>
 
-" quick jump to a buffer
+" quick jump to a previously visited file
 nnoremap <leader>bo :browse oldfiles<cr>
 
 " close the current buffer
