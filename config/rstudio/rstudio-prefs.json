@@ -8,19 +8,20 @@
     "panes": {
         "quadrants": [
             "Console",
-            "TabSet2",
+            "TabSet1",
             "Source",
-            "TabSet1"
+            "TabSet2"
         ],
         "tabSet1": [
+            "Plots",
             "Presentation"
         ],
         "tabSet2": [
             "Environment",
             "Files",
-            "Plots",
             "Help",
             "Build",
+            "VCS",
             "Viewer",
             "Presentations"
         ],
@@ -28,12 +29,16 @@
             "History",
             "Connections",
             "Packages",
-            "VCS",
             "Tutorial"
         ],
         "console_left_on_top": true,
         "console_right_on_top": true,
-        "additional_source_columns": 0
+        "additional_source_columns": 0,
+        "sidebar": [
+            "Chat"
+        ],
+        "sidebar_visible": false,
+        "sidebar_location": "right"
     },
     "editor_keybindings": "vim",
     "strip_trailing_whitespace": true,
