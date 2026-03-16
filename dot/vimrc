@@ -17,7 +17,7 @@ autocmd FocusGained,BufEnter * silent! checktime
 set autowrite
 
 " number of lines to the cursor when moving vertically using j/k
-set scrolloff=5
+set scrolloff=3
 
 set number relativenumber
 
@@ -93,7 +93,7 @@ highlight VertSplit cterm=NONE guifg=NONE
 
 " automatically generate tags file for given filetypes
 if !empty(expand(glob("tags")))
-    autocmd BufWritePost *.py,*.R,*.Rmd silent! !ctags -o newtags -R .; mv newtags tags &
+    autocmd BufWritePost *.py,*.R,*.Rmd,*.awk silent! !ctags -o newtags -R .; mv newtags tags &
 end
 
 " in command mode, use normal ignorecase, not smartcase
@@ -127,15 +127,20 @@ set expandtab
 " pressing TAB respects context
 set smarttab
 
-" one TAB is four characters wide for everything...
+" one TAB is four characters wide for everything
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
-" ... except R files
+" ... except for these R-specific settings:
 autocmd FileType r :setlocal sw=2 ts=2 sts=2
 let g:r_indent_align_args = 0
+" ... and these Python-specific settings:
+let g:pyindent_open_paren = 'shiftwidth()'
 
 set autoindent
+
+" unlist terminal buffers (will be ignored by :ls and :bn / :bp)
+autocmd TerminalOpen * if bufwinnr('') > 0 | setlocal nobuflisted | endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Custom commands and shortcuts
@@ -180,7 +185,8 @@ nnoremap <leader>S :source $MYVIMRC<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 " quick jump to a buffer
-nnoremap <leader>bb :ls<cr>:b<space>
+nnoremap <leader>l :ls<cr>:b<space>
+nnoremap <leader>L :ls<cr>:sb<space>
 
 " quick jump to the previous buffer
 nnoremap <leader><tab> <c-^>
