@@ -74,6 +74,8 @@ set noswapfile
 
 set wrap
 
+set nojoinspaces
+
 " save undo trees in files
 set undofile
 set undodir=~/.vim/undo
