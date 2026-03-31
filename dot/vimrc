@@ -57,6 +57,10 @@ set matchtime=2
 
 set novisualbell
 
+set macligatures
+set guifont=Fira\ Code:h15
+"set guifont=Monaco:h15
+
 " how long to wait for further keys
 set timeoutlen=1000
 
@@ -140,6 +144,8 @@ let g:r_indent_align_args = 0
 let g:pyindent_open_paren = 'shiftwidth()'
 
 set autoindent
+
+set modelines=0
 
 " unlist terminal buffers (will be ignored by :ls and :bn / :bp)
 autocmd TerminalOpen * if bufwinnr('') > 0 | setlocal nobuflisted | endif
