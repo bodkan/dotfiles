@@ -145,7 +145,7 @@ let g:pyindent_open_paren = 'shiftwidth()'
 
 set autoindent
 
-set modelines=0
+set nomodeline
 
 " unlist terminal buffers (will be ignored by :ls and :bn / :bp)
 autocmd TerminalOpen * if bufwinnr('') > 0 | setlocal nobuflisted | endif
