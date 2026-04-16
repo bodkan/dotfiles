@@ -57,9 +57,11 @@ set matchtime=2
 
 set novisualbell
 
-set macligatures
-set guifont=Fira\ Code:h15
-"set guifont=Monaco:h15
+if has("gui_running")
+    set macligatures
+    set guifont=Fira\ Code:h15
+    "set guifont=Monaco:h15
+endif
 
 " how long to wait for further keys
 set timeoutlen=1000
