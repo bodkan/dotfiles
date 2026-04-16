@@ -17,9 +17,11 @@ done
 echo "Generating contents of $HOME/.Renviron..."
 
 # extract GitHub access token first (if it's even present)
-GITHUB_PAT=$(awk -F= '/GITHUB_PAT/{print $2}' $HOME/.Renviron)
+if [ -f $HOME/.Renvirone ]; then
+    GITHUB_PAT=$(awk -F= '/GITHUB_PAT/{print $2}' $HOME/.Renviron)
+fi
 
 echo "PATH=$PATH" > $HOME/.Renviron
-if [[ ! -f /.dockerenv ]] && [[ "$OSTYPE" != "darwin"* ]]; then
+if [ ! -f /.dockerenv ] && [ "$OSTYPE" != "darwin"* ]; then
     echo "R_LIBS_USER=$HOME/projects/.R_LIBS" >> $HOME/.Renviron
 fi
