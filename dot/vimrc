@@ -198,9 +198,6 @@ nnoremap <leader>S :source $MYVIMRC<cr>
 nnoremap <leader>l :ls<cr>:b<space>
 nnoremap <leader>L :ls<cr>:sb<space>
 
-" quick jump to the previous buffer
-nnoremap <leader><tab> <c-^>
-
 " quick jump to a previously visited file
 nnoremap <leader>bo :browse oldfiles<cr>
 
