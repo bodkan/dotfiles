@@ -57,5 +57,8 @@
     "jobs_tab_visibility": "shown",
     "default_project_location": "/private/tmp",
     "initial_working_directory": "~",
-    "sync_files_pane_working_dir": true
+    "sync_files_pane_working_dir": true,
+    "assistant": "none",
+    "chat_provider": "none",
+    "assistant_toolbar_button_visible": false
 }
