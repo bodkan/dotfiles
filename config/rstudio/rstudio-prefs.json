@@ -14,29 +14,28 @@
         ],
         "tabSet1": [
             "Plots",
+            "Build",
+            "Viewer",
             "Presentation"
         ],
         "tabSet2": [
             "Environment",
             "Files",
             "Help",
-            "Build",
             "VCS",
-            "Viewer",
             "Presentations"
         ],
         "hiddenTabSet": [
             "History",
             "Connections",
             "Packages",
-            "Tutorial"
+            "Tutorial",
+            "Chat"
         ],
         "console_left_on_top": true,
         "console_right_on_top": true,
         "additional_source_columns": 0,
-        "sidebar": [
-            "Chat"
-        ],
+        "sidebar": [],
         "sidebar_visible": false,
         "sidebar_location": "right"
     },
