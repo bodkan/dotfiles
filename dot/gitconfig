@@ -19,7 +19,7 @@
     l = log
 [core]
     editor = vim
-    fileMode = false
+    filemode = false
 [push]
     default = matching
 [init]
