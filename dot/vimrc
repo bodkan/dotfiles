@@ -44,7 +44,7 @@ set whichwrap+=<,>,h,l
 set ignorecase
 set smartcase
 set incsearch
-set nohlsearch
+set hlsearch
 
 " show partial commands as they are typed
 set showcmd
@@ -190,6 +190,9 @@ nnoremap <leader>ff :edit <c-r>=FindRootDirectory()<cr>/**/*
 nnoremap <leader>E :split $MYVIMRC<cr>
 nnoremap <leader>S :source $MYVIMRC<cr>
 
+" search for a given pattern within the current screen
+nnoremap <silent> \ :call ScreenLocalSearch()<CR>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Windows, buffers, tabs
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -308,3 +311,18 @@ function! ClearBreakpoints()
         echo "Not applicable for this filetype!"
     endif
 endfunction
+
+" Search for a given text only within the current window
+function! ScreenLocalSearch()
+    let l:prev_scrolloff = &scrolloff
+
+    " select the entire screen top to bottom
+    set scrolloff=0
+    execute "normal! VHoL\<Esc>``\<C-y>"
+
+    let &scrolloff = l:prev_scrolloff
+
+    " open the search prompt pre-filled with the visual bounds atom
+    call feedkeys('/\%V', 'n')
+endfunction
+
