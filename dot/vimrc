@@ -298,17 +298,16 @@ endfunction
 
 " Remove all `breakpoint()` (Python) or `browser()` (R) function calls
 function! ClearBreakpoints()
-    let l:marker = ""
     " create a breakpoint marker matching the current buffer's language
     if &filetype ==# 'python'
-        marker = "breakpoint\(\)" .. g:breakpoint_marker
+        let l:marker = "breakpoint\(\)" .. g:breakpoint_marker
     elseif &filetype ==# 'r'
-        marker = "browser\(\)" .. g:breakpoint_marker
+        let l:marker = "browser\(\)" .. g:breakpoint_marker
     endif
 
     " delete all such markers (and avoid spamming the register)
-    if marker != ""
-        execute "g/^.*" .. marker .. ".*$/d _"
+    if l:marker != ""
+        execute "g/^.*" .. l:marker .. ".*$/d _"
         write
     else
         echo "Not applicable for this filetype!"
