@@ -318,7 +318,8 @@ function! ScreenLocalSearch()
 
     " select the entire screen top to bottom
     set scrolloff=0
-    execute "normal! VHoL\<Esc>``\<C-y>"
+    normal! VHoL
+    execute "normal! \<Esc>``\<C-y>"
 
     let &scrolloff = l:prev_scrolloff
 
