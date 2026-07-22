@@ -230,6 +230,9 @@ set switchbuf=useopen,usetab,newtab
 " always show tabline
 set showtabline=1
 
+nnoremap <silent> <Leader>s :call SendToTmux()<CR>
+xnoremap <silent> <Leader>s :call SendToTmux()<CR>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Helper functions
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -327,3 +330,24 @@ function! ScreenLocalSearch()
     call feedkeys('/\%V', 'n')
 endfunction
 
+function! SendToTmux() range
+  " save unnamed register state
+  let l:saved_reg = getreg('"')
+  let l:saved_type = getregtype('"')
+
+  " yank the full line range into register
+  execute a:firstline . ',' . a:lastline . 'yank'
+
+  " send entire block into a tmux buffer, then paste it to {last} pane
+  call system('tmux load-buffer -', @")
+  call system('tmux paste-buffer -t {last}')
+
+  " restore unnamed register
+  call setreg('"', l:saved_reg, l:saved_type)
+
+  " move cursor to the start of the next non-empty line
+  call cursor(a:lastline + 1, 1)
+  if getline('.') =~# '^\s*$'
+    call search('^\s*\S', 'W')
+  endif
+endfunction
