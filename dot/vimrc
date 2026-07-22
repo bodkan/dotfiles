@@ -230,8 +230,8 @@ set switchbuf=useopen,usetab,newtab
 " always show tabline
 set showtabline=1
 
-nnoremap <silent> <Leader>s :call SendToTmux()<CR>
-xnoremap <silent> <Leader>s :call SendToTmux()<CR>
+nnoremap <silent> <leader><cr> :call SendToTmux('normal')<CR>
+xnoremap <silent> <leader><cr> :<C-u>call SendToTmux('visual')<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Helper functions
@@ -277,7 +277,7 @@ function! ToggleBreakpoint()
     let l:line=getline('.')
 
     " does the current line already have a breakpoint?
-    let l:has_breakpoint = match(line, g:breakpoint_marker)
+    let l:has_breakpoint = match(l:line, g:breakpoint_marker)
 
     " if not, add a breakpoint matching the current buffer's language
     if has_breakpoint == -1
@@ -285,7 +285,7 @@ function! ToggleBreakpoint()
             execute "normal! obreakpoint()" .. g:breakpoint_marker .. "\<esc>^"
             write
         elseif &filetype ==# 'r'
-            normal! "normal! obrowser()" .. g:breakpoint_marker .. "\<esc>^"
+            execute "normal! obrowser()" .. g:breakpoint_marker .. "\<esc>^"
             write
         else
             echo "Not applicable for this filetype!"
@@ -330,24 +330,38 @@ function! ScreenLocalSearch()
     call feedkeys('/\%V', 'n')
 endfunction
 
-function! SendToTmux() range
+function! SendToTmux(type)
   " save unnamed register state
   let l:saved_reg = getreg('"')
   let l:saved_type = getregtype('"')
 
-  " yank the full line range into register
-  execute a:firstline . ',' . a:lastline . 'yank'
+  " remember visual mode type before yanking
+  let l:vmode = visualmode()
+  let l:start_line = line('.')
 
-  " send entire block into a tmux buffer, then paste it to {last} pane
+  if a:type ==# 'visual'
+    " in visual mode, yank the exact visual selection
+    normal! gv"yy
+    let l:target_line = line("'>")
+  else
+    " in normal mode: yank the current line
+    normal! "yyy
+    let l:target_line = l:start_line
+  endif
+
+  " send text to tmux buffer and paste
   call system('tmux load-buffer -', @")
   call system('tmux paste-buffer -t {last}')
+  call system('tmux send-keys -t {last} Enter')
 
   " restore unnamed register
   call setreg('"', l:saved_reg, l:saved_type)
 
-  " move cursor to the start of the next non-empty line
-  call cursor(a:lastline + 1, 1)
-  if getline('.') =~# '^\s*$'
-    call search('^\s*\S', 'W')
+  " advance cursor if needed
+  if a:type ==# 'normal' || l:vmode ==# 'V'
+    call cursor(l:target_line + 1, 1)
+    if getline('.') =~# '^\s*$'
+      call search('^\s*\S', 'W')
+    endif
   endif
 endfunction
