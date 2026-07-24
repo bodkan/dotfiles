@@ -156,11 +156,9 @@ autocmd TerminalOpen * if bufwinnr('') > 0 | setlocal nobuflisted | endif
 " Custom commands and shortcuts
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-" toggle a breakpoint at the current line
 nnoremap <silent> <leader>p :call ToggleBreakpoint()<cr>
 nnoremap <silent> <leader>P :call ClearBreakpoints()<cr>
 
-" :W is a sudo save
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 nnoremap <leader>n :set number! relativenumber!<cr>
@@ -168,13 +166,13 @@ nnoremap <leader>N :set relativenumber!<cr>
 
 nnoremap <leader>h :set hlsearch!<cr>
 
-" pressing * or # searches for the current visual selection
+" searche for the current visual selection forward or backward
 vnoremap <silent> * :<C-u>call SelectionAction('')<cr>/<C-R>=@/<cr><cr>
 vnoremap <silent> # :<C-u>call SelectionAction('')<cr>?<C-R>=@/<cr><cr>
 
 " vimgrep for visual selection
 vnoremap <silent> <leader>g :call SelectionAction('vimgrep')<CR>
-" replace for visual selection
+" replace visual selection
 vnoremap <silent> <leader>r :call SelectionAction('replace')<CR>
 
 nnoremap <leader>q :botright copen<cr>
@@ -190,7 +188,7 @@ nnoremap <leader>ff :edit <c-r>=FindRootDirectory()<cr>/**/*
 nnoremap <leader>E :split $MYVIMRC<cr>
 nnoremap <leader>S :source $MYVIMRC<cr>
 
-" search for a given pattern within the current screen
+" search for a given pattern only within the current screen view
 nnoremap <silent> \ :call ScreenLocalSearch()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -199,22 +197,19 @@ nnoremap <silent> \ :call ScreenLocalSearch()<CR>
 
 " quick jump to a buffer
 nnoremap <leader>l :ls<cr>:b<space>
-nnoremap <leader>L :ls<cr>:sb<space>
-
-" quick jump to a previously visited file
-nnoremap <leader>bo :browse oldfiles<cr>
+nnoremap <leader>V :ls<cr>:sb<space>
+nnoremap <leader>H :ls<cr>:vert sb<space>
 
 " close the current buffer
-nnoremap <leader>bd :bnext<cr>:bd#<cr>
+nnoremap <leader>bx :bnext<cr>:bd#<cr>
 
 " moving between buffers
-nnoremap ]b :bnext<cr>
-nnoremap [b :bprevious<cr>
+nnoremap <leader><tab> :b#<cr>
 
 " managing tabs
 nnoremap <leader>te :tabedit<space>
 nnoremap <leader>tc :tabnew<cr>
-nnoremap <leader>td :tabclose<cr>
+nnoremap <leader>tx :tabclose<cr>
 
 " moving between tabs
 nnoremap ]t :tabnext<cr>
@@ -230,6 +225,7 @@ set switchbuf=useopen,usetab,newtab
 " always show tabline
 set showtabline=1
 
+" poor vim/tmux REPL shortcuts
 nnoremap <silent> <leader><cr> :call SendToTmux('normal')<CR>
 xnoremap <silent> <leader><cr> :<C-u>call SendToTmux('visual')<CR>
 
@@ -329,6 +325,9 @@ function! ScreenLocalSearch()
     call feedkeys('/\%V', 'n')
 endfunction
 
+" Send either a current line (normal mode), a selection of text (visual mode),
+" or a selected block (visual mode) to the {last} tmux pane (assumed to be
+" running a REPL process of some kind)
 function! SendToTmux(type)
   " save unnamed register state
   let l:saved_reg = getreg('"')
